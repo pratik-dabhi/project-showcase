@@ -1,7 +1,7 @@
 const {Router} = require('express');
 const router = Router();
-const rform= require ('../controller/creg-form')
-const authToken = require('../middleware/authMiddleware')
+const rform= require ('../controller/creg-form');
+const authToken = require('../middleware/authMiddleware');
 
 router.get('/candidate',authToken,rform.candidate);
 

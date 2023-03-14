@@ -2,9 +2,6 @@ const express = require('express');
 const con = require('../db')
 const app = express();
 
-
-//app.post("/data-api/",async (req, res) => {
-
 data_api = async(req,res) => {
     let arr = req.body.arr;
     let id = req.body.id;
@@ -13,15 +10,11 @@ data_api = async(req,res) => {
         let a1 = await con.query(q1);
         console.log("Inserted");
     }else{
-        let q1 = `update update_date set firstname='${arr[0]}',lastname='${arr[1]}',surname='${arr[2]}',email='${arr[3]}',contact='${arr[4]}',city='${arr[5]}' where table_id=${id}`;
-        //console.log(`update into update_data set firstname='${arr[0]}',lastname='${arr[1]}',surname='${arr[2]}',email='${arr[3]}',contact='${arr[4]}',city='${arr[5]}' where table_id=${id}`);
+        let q1 = `update update_date set firstname='${arr[1]}',lastname='${arr[2]}',surname='${arr[3]}',email='${arr[4]}',contact='${arr[5]}',city='${arr[6]}' where table_id=${id}`;
         let a1 = await con.query(q1);
         console.log('update');
     }
 }
-
-
-// app.post('/update-api-all',async(req,res)=>{
 
 update_api_all = async(req,res) => {
     let candidate_id = req.body.candidate_id;
@@ -46,12 +39,11 @@ update_api_all = async(req,res) => {
     }
 }
 
-// app.get('/data/',async(req,res)=>{
-
 data = async (req,res) => {
     let sql = `select * from update_date`;
     let [a1] = await con.query(sql);
-    res.render('greed',{a1:a1})
+    let data = req.data;
+    res.render('greed',{a1:a1,data:data})
 }
 
 module.exports = {data_api,data,update_api_all}

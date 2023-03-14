@@ -19,11 +19,42 @@
             z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
             cursor: pointer; /* Add a pointer on hover */
             }
+
+            .flex-row{
+        display: flex;
+      }
+      ul li{
+            list-style: none;
+            padding:5px 15px;
+        }
+        .nav li a{
+            text-decoration: none;
+            color: white;
+        }
+        .align-flex{
+            display: flex;
+            align-items: center;
+            background-color: #2C3333;
+            color: white;
+            justify-content: space-between;
+        }
     </style>
 </head>
 <body>
     <div id="overlay"></div>
-    <h1 style="text-align: center;font-family: 'Times New Roman', Times, serif; " id="num"></h1>
+    <div class="align-flex">
+        <div>
+            <h1 class="align-center">Pagination</h1>
+        </div>            
+        <div class="align-flex">
+            <ul class="flex-row nav">
+                <li><a href="/route/home">Home</a></li>
+                <li><a href="/route/logout-api">Logout</a></li>
+                <li><a href="#"><%= data.db_name%></a></li>
+            </ul>
+        </div>
+    </div>
+    <h2 style="text-align: center;font-family: 'Times New Roman', Times, serif; " id="num">PAGE 1</h2>
     <div>
         <table border="1px" id="t1">
             <tr style="background-color: darkgray;">
@@ -64,7 +95,7 @@
             document.getElementById('overlay').style.display='block';
             let num = document.getElementById('num');
             num.innerHTML=('PAGE ' +`${page}`)
-            const result = await fetch(`http://localhost:8080/data-api?page=${page}`);
+            const result = await fetch(`/route/data-api?page=${page}`);
             const data = await result.json();
             let t1 = document.getElementById('t1');
             let opt= `<tr style="background-color: darkgray;"><td>student_id</td><td>student_firstname</td><td>student_lastname</td><td>student_contact</td><td>student_email</td><td>student_college</td><td>student_city</td><td >create_date</td></tr>`;

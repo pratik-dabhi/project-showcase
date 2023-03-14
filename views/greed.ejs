@@ -5,8 +5,48 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Table</title>
+    <style>
+      .flex-row{
+        display:flex
+    }
+           ul li{
+            list-style: none;
+            padding:5px 15px;
+        }
+        .nav li a{
+            text-decoration: none;
+            color: white;
+        }
+        .align-flex{
+            display: flex;
+            align-items: center;
+            background-color: #2C3333;
+            color: white;
+            justify-content: space-between;
+        }
+        .save-btn{
+            color:white;
+            background: #2C3333;
+            padding: 5px 15px;
+            border-radius: 25px;
+        }
+    </style>
   </head>
   <body>
+    <div class="align-flex">
+      <div>
+          <h1>
+              Greed
+          </h1>
+      </div>
+      <div class="align-flex">
+          <ul class="flex-row nav">
+              <li><a href="/route/home">Home</a></li>
+              <li><a href="/route/logout-api">Logout</a></li>
+              <li><a href="#"><%= data.db_name%></a></li>
+          </ul>
+      </div>
+  </div>   
       <form action="/route/update-api-all" method="post">
         <table border="1px" id="t1">
           <tr style="background-color: darkgray">
@@ -47,8 +87,11 @@
             </tr>
           <% } %>
         </table><br>
-        <span onclick="add()">add </span>
-        <input type="submit" value='SAVE ALL'>
+        <div>
+          <span onclick="add()" class="save-btn">add </span>
+          <input type="submit" value='SAVE ALL' class="save-btn">
+        </div>
+        
       </form>
     </div>
     <script>
@@ -99,16 +142,8 @@
             },
             body:JSON.stringify({arr:arr,id:id})            
          });
-         console.log('112-Reload is called');
          location.reload();
-         console.log('114-Reload is called');
       }
-
-      // async function deleteFun(id){
-      //   console.log('114--'+id);
-      //   window.confirm(`Are you sure to delete ${id}`);
-      //   const result = await fetch(`/delete-api?id=${id}`);
-      // }
     </script>
   </body>
 </html>

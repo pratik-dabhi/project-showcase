@@ -3,7 +3,6 @@ const jwt = require('jsonwebtoken');
 const express = require('express');
 const app = express();
 const con =require("../db");
-const authToken = require("../middleware/authMiddleware");
 const cookieParser = require("cookie-parser");
 app.use(cookieParser)
 
