@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page</title>
+    <style>
+        #overlay {
+            position: fixed; /* Sit on top of the page content */
+            display: none; /* Hidden by default */
+            width: 100%; /* Full width (cover the whole page) */
+            height: 100%; /* Full height (cover the whole page) */
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0,0,0,0.7); /* Black background with opacity */
+            z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+            cursor: pointer; /* Add a pointer on hover */
+            }
+    </style>
+</head>
+<body>
+    <div id="overlay"></div>
+    <h1 style="text-align: center;font-family: 'Times New Roman', Times, serif; " id="num"></h1>
+    <div>
+        <table border="1px" id="t1">
+            <tr style="background-color: darkgray;">
+                <td>student_id</td>
+                <td >student_firstname</td>
+                <td>student_lastname</td>
+                <td>student_contact</td>
+                <td>student_email</td>
+                <td>student_college</td>
+                <td>student_city</td>
+                <td>create_date</td>
+            </tr>
+
+            <% for(var i=0; i < data.length ; i++ ){ %>
+            <tr style="background-color: lightgray;">
+                <td><%= data[i].student_id %></td>
+                <td><%= data[i].student_firstname %></td>
+                <td><%= data[i].student_lastname %> </td>
+                <td><%= data[i].student_contact %></td>
+                <td><%= data[i].student_email %></td>
+                <td><%= data[i].student_college %></td>
+                <td><%= data[i].student_city %></td>
+                <td><%= data[i].create_date %></td>
+            </tr>
+            <% } %>
+        </table><br/>  
+    </div>
+ 
+    <div>
+        <h1> <%let count1 = Math.ceil(countNum / limit)%></h1>
+        
+        <% for(var i=1 ; i < count1 +1 ; i++) { %>
+            <a onclick="pagAs('<%= i %>')"> <%= i %></a>|
+            <% } %>
+    </div>
+    <script>
+        async function pagAs(page){
+            document.getElementById('overlay').style.display='block';
+            let num = document.getElementById('num');
+            num.innerHTML=('PAGE ' +`${page}`)
+            const result = await fetch(`http://localhost:8080/data-api?page=${page}`);
+            const data = await result.json();
+            let t1 = document.getElementById('t1');
+            let opt= `<tr style="background-color: darkgray;"><td>student_id</td><td>student_firstname</td><td>student_lastname</td><td>student_contact</td><td>student_email</td><td>student_college</td><td>student_city</td><td >create_date</td></tr>`;
+            data.result.forEach(e => {
+                let s_id = e.student_id;
+                let s_fname = e.student_firstname;
+                let s_lname = e.student_lastname;
+                let s_contact =e.student_contact;
+                let s_email =e.student_email;
+                let s_college = e.student_college;
+                let s_city = e.student_city;
+                let s_date = e.create_date;
+                opt += `<tr style="background-color: lightgray;"><td>${s_id}</td><td>${s_fname}</td><td>${s_lname}</td><td>${s_contact}</td><td>${s_email}</td><td>${s_college}</td><td>${s_city}</td><td >${s_date}</td></tr>`;    
+            });
+            console.log(opt);
+            t1.innerHTML=(`${opt}`);
+            setTimeout("document.getElementById('overlay').style.display='none '",1000);
+        }
+    </script>
+</body>
+</html>

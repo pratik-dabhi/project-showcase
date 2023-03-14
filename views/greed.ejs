@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Table</title>
+  </head>
+  <body>
+      <form action="/route/update-api-all" method="post">
+        <table border="1px" id="t1">
+          <tr style="background-color: darkgray">
+            <td>Id</td>
+            <td>firstname</td>
+            <td>lastname</td>
+            <td>surname</td>
+            <td>contact</td>
+            <td>email</td>
+            <td>city</td> 
+            <td></td>
+          </tr>
+          <% for(var i=0 ; i<a1.length;i++){ %>
+          <tr style="background-color: lightgray">
+            <td>
+              <input type="text" value="<%= a1[i].table_id %>" name="candidate_id" id="candidate_id" hidden>
+                <%= a1[i].table_id %>
+            </td>
+            <td>
+              <input type="text" name="firstname" value="<%= a1[i].firstname %>"/>
+            </td>
+            <td>
+              <input type="text" name="lastname" value="<%= a1[i].lastname %>"/>
+            </td>
+            <td>
+              <input type="text" name="surname" value="<%= a1[i].surname %>" />
+            </td>
+            <td>
+              <input type="text" name="contact" value="<%= a1[i].contact %>" />
+            </td>
+            <td>
+              <input type="text" name="email" value="<%= a1[i].email %>" />
+            </td>
+            <td>
+                <input type="text" name="city" value="<%= a1[i].city %>" />
+              </td>
+            <td><span onclick="update(this)" id="<%= a1[i].table_id %>">save</span></td>
+            </tr>
+          <% } %>
+        </table><br>
+        <span onclick="add()">add </span>
+        <input type="submit" value='SAVE ALL'>
+      </form>
+    </div>
+    <script>
+      function add() {
+        let opt =
+          `<tr style="background-color: lightgray">
+            <td>
+            </td>
+            <td>
+              <input type="text" name="firstname" />
+            </td>
+            <td>
+              <input type="text" name="lastname" />
+            </td>
+            <td>
+              <input type="text" name="surname"  />
+            </td>
+            <td>
+              <input type="text" name="contact" />
+            </td>
+            <td>
+              <input type="text" name="email"  />
+            </td>
+            <td>
+                <input type="text" name="city" />
+              </td>
+            <td><span onclick="update(this)" id="">save</span></td>            
+            </tr>`;
+        document.querySelector("tbody").innerHTML += opt;
+      }
+
+      async function update(pratik) {
+        window.confirm('Are you sure to save?')
+        let id = pratik.getAttribute('id');
+        let rowId = pratik.parentNode;
+        let row = rowId.parentNode;
+        let tds = row.children;
+        let arr=[]; 
+         for (let x of tds) {
+            let y = x.childNodes[1];
+           if(y) arr.push(y.value)  
+         }
+         console.log('arar 94 -- ',arr);
+         const result = await fetch(`/route/data-api`,{
+            method:"POST",
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({arr:arr,id:id})            
+         });
+         console.log('112-Reload is called');
+         location.reload();
+         console.log('114-Reload is called');
+      }
+
+      // async function deleteFun(id){
+      //   console.log('114--'+id);
+      //   window.confirm(`Are you sure to delete ${id}`);
+      //   const result = await fetch(`/delete-api?id=${id}`);
+      // }
+    </script>
+  </body>
+</html>
+
+

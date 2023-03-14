@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login</title>
+    <link href="/reg-style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="bg-img padding-rl">
+        <form method="post" action="/route/login">
+          <div>
+            <img src="logo.svg" alt="" />
+          </div>
+
+          <div>
+            <label>Email</label>
+          </div>
+          <div>
+            <input type="text" name="email" />
+          </div>
+          <div>
+            <label>Password</label>
+          </div>
+          <div>
+            <input type="password" id="pass-1" name="password" />
+          </div>
+          <% if(err_msg) {%>
+          <span class="alert-red"><%= err_msg %></span>
+          <% } %>
+          <div>
+            <input type="submit" value="Login" id="login_btn" />
+          </div>
+        </form>
+        <div class="a-link">
+          <label>Don't have an acoount?<a href="/route/register-page"
+              >Register Here</a
+            ></label >
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

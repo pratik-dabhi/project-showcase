@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+    <style>
+        label{
+            margin-right: 5px;
+        }
+
+        #container{
+            margin: 0px auto;
+            padding: 0px 16px;
+        }
+
+        fieldset {
+            margin-bottom: 25px;
+            padding: 25px 25px 25px 25px;
+        }
+
+        input[type=text],
+        input[type=email],
+        input[type=number],
+        input[type=radio],
+        input[type=date],
+        input[type=checkbox],
+        input[type=button],
+        select {
+            margin-bottom: 25px;
+            margin-right: 5px;
+
+        }
+
+        #tr1 {
+            margin-bottom: 25px;
+        }
+
+        form {
+            box-sizing: border-box;
+            padding: 2rem;
+            border-radius: 1rem;
+            background-color: hsl(0, 0%, 100%);
+            border: 4px solid hsl(0, 0%, 90%);
+        }
+        .flex-row{
+        display: flex;
+      }
+      ul li{
+            list-style: none;
+            padding:5px 15px;
+        }
+        .nav li a{
+            text-decoration: none;
+            color: white;
+        }
+        .align-flex{
+            display: flex;
+            align-items: center;
+            background-color: #2C3333;
+            color: white;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="flex-row align-flex">
+            <div>
+                <h1>
+                    Registration Form
+                </h1>
+            </div>
+            <div class="align-flex">
+                <ul class="flex-row nav">
+                    <li><a href="/route/home">Home</a></li>
+                    <li><a href="/route/logout-api">Logout</a></li>
+                    <li><a href="#"><%= data.db_name%></a></li>
+                </ul>
+            </div>
+        </div>    
+        <form action="/route/candidate-details/" method="post">
+            <fieldset class="f1">
+                <legend>Basic Details</legend>
+                <table class="t1">
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">First Name</label>
+                                <input type="text" value="" name="firstname" id="first_name">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Last Name</label>
+                                <input type="text" value="" name="lastname" id="last_name">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Surname</label>
+                                <input type="text" value="" name="surname" id="surname">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Designation</label>
+                                <input type="text" value="" name="des" id="designation">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Email</label>
+                                <input type="email" value="" name="email" id="email">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Contact</label>
+                                <input type="tel" name="contact" id="contact">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Address1</label>
+                                <input type="text" name="address1" id="address_1">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Address2</label>
+                                <input type="text" name="address2" id="address_2">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Zipcode</label>
+                                <input type="text" name="zipcode" id="zipcode">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr id="tr1">
+                        <td>
+                            <div>
+                                <label class="lbl">State</label>
+                                <select name="state" id="s1" onchange="showCity()">
+                                    <option disabled hidden selected>SELECT</option>
+                                    <% for(var i=0 ; i<state.length ; i++){ %>
+                                        <option name="<%=state[i].state_value%>" value="<%= state[i].state_value%>" id="<%= state[i].state_id%>"> <%= state[i].state_value %> </option>
+                                        <% } %>    
+                                    </select>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="row">
+                                    <label class="lbl">City</label>
+                                    <select name="city" id="city_com">
+                                        
+                                    </select>
+                                </div>
+                            </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Gender</label>
+                                <% for(var i=0 ; i < gender.length ; i++) { %>
+                                    <input type="radio" name="gender" value="<%= gender[i].o_value %>">
+                                    <%= gender[i].o_value %>
+                                        <% } %>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label class="lbl"> Relationship Status</label>
+                                <select name="rstatus">
+                                    <% for(var i=0;i < rel.length ; i++) {%>
+                                        <option name="<%= rel[i].o_value %>" value="<%= rel[i].o_value%>">
+                                            <%= (rel[i].o_value).toUpperCase()%>
+                                        </option>
+                                        <% } %>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">DOB</label>
+                                <input type="date" name="date" id="dob_date">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+
+
+            <fieldset id="f2">
+                <legend>Education Details</legend>
+                <table id="t2">
+                    <tr id="tr3">
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Course</label>
+                                <select name="course">
+                                    <% for(var i=0 ; i < course.length ; i++) { %>
+                                        <option name="<%= course[i].o_value %>" value="<%= course[i].o_value %>">
+                                            <%= course[i].o_value %>
+                                        </option>
+                                        <% } %>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Board/University</label>
+                                <input type="text" name="board_university" id="board">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Percentage</label>
+                                <input type="text" name="per" id="percentange">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Passing Year</label>
+                                <input type="text" name="passing_year" id="passing_year">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <input type="button" value="+" name="addBtn" id="addBtn1" onclick="addFun1()">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+                <table id="t21"> </table>
+            </fieldset>
+
+            <fieldset id="f3">
+                <legend>Work Experience</legend>
+                <table id="t3">
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Company Name</label>
+                                <input type="text" name="companyname" id="company_name" placeholder="Company Name">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Designation</label>
+                                <input type="text" name="designation" id="designation" placeholder="Designation">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">CTC</label>
+                                <input type="text" name="ctc" id="ctc" placeholder="ctc">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">Start Date</label>
+                                <input type="date" id="start_date" name="startdate">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label class="lbl">End Date</label>
+                                <input type="date" id="end_date" name="enddate">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <input type="button" value="+" name="addBtn" onclick="addfun2()">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+
+            <fieldset id="f4">
+                <legend>Language Known</legend>
+                <table id="t4">
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <% for(var i=0 ; i < lang.length ; i++) { %>
+                                    <input type="checkbox" name="language" value="<%= lang[i].o_value %>"><span>
+                                        <%= lang[i].o_value %>
+                                    </span>
+                                    <input type="checkbox" name="<%= 'read_'+lang[i].o_value %>" value="<%= 'read_'+lang[i].o_value %>" ><span>Read</span>
+                                    <input type="checkbox" name="<%= 'write_'+lang[i].o_value %>" value="<%= 'write_'+lang[i].o_value %>"><span>Write</span>
+                                    <input type="checkbox" name="<%= 'speak_'+lang[i].o_value %>" value="<%= 'speak_'+lang[i].o_value %>"><span>Speak</span><br />
+                                    <% } %>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+
+            <fieldset id="f5">
+                <legend>Technology Knowledge</legend>
+                <table id="f5">
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <% for(var i=0 ; i < tech.length ; i++){ %>
+                                    <input type="checkbox" name="techno" value="<%= tech[i].o_value %>"><span><%= tech[i].o_value %></span>
+                                    <input type="radio" name="<%= tech[i].o_value %>" value="beginner"><span>Beginner</span>
+                                    <input type="radio" name="<%= tech[i].o_value %>" value="mediator"><span>Mediator</span>
+                                    <input type="radio" name="<%= tech[i].o_value %>" value="expert"><span>Expert</span>
+                                    </br>
+                                    <% } %>
+                            </div>
+                        </td>
+                    </tr>
+
+                </table>
+            </fieldset>
+
+            <fieldset id="f6">
+                <legend>Reference Details</legend>
+                <table id="t6">
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label>Reference - 1</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label>Name</label>
+                                <input type="text" name="rname1" id="reference_name1" placeholder="Reference Name">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label>Contact number</label>
+                                <input type="tel" name="cnumber1" id="reference_number1"
+                                    placeholder="Contact number">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label>Relation</label>
+                                <input type="text" name="relation1" id="relation1"
+                                    placeholder="Relation(Ex.Father,Uncle)">
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label>Reference - 2</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label>Name</label>
+                                <input type="text" name="rname2" id="reference_name2"
+                                    placeholder="Reference Name">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label>Contact number</label>
+                                <input type="tel" name="cnumber2" id="reference_number1"
+                                    placeholder="Contact number">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label>Relation</label>
+                                <input type="text" name="relation2" id="relation1"
+                                    placeholder="Relation(Ex.Father,Uncle)">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+
+            <fieldset id="f7">
+                <legend>Preference</legend>
+                <table id="t7">
+                    <tr>
+                        <td>
+                            <div class="row">
+                                <label>Prefer Location</label>
+                                <select name="location">
+                                    <% for(var i=0 ; i < loc.length ; i++) { %>
+                                        <option name="<%= loc[i].o_value %>">
+                                            <%= loc[i].o_value %>
+                                        </option>
+                                        <% } %>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label>Expected CTC</label>
+                                <input type="text" name="expected_ctc" id="expected_ctc" placeholder="Expected CTC">
+                            </div>
+                        </td>
+                        <td>
+                            <div class="row">
+                                <label>Current CTC</label>
+                                <input type="text" name="current_ctc" id="current_ctc" placeholder="Current CTC">
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </fieldset>
+
+            <table align="center" id="t8">
+                <tr>
+                    <td>
+                        <div>
+                            <input type="submit" value="Submit" name="submit" id="submit_btn">
+                            <input type="reset" value="Reset" name="reset" id="reset_btn" onclick="load()">
+                        </div>
+                    </td>
+                </tr>
+            </table>
+        </form>
+    </div>
+    
+    
+    <script>
+        async function showCity() {
+            
+            let state = document.getElementById("s1");        
+            const result = await fetch(`/route/city-api?id=${state.value}`);
+            const city1 = await result.json();
+            let  city_com = document.getElementById('city_com');
+            let opt=''; 
+            city1.a1.forEach(e => {
+              let city_name = e.city_value;
+               opt += `<option name='${city_name}' value='${city_name}'> ${city_name} </option>`;  
+            });
+            city_com.innerHTML=`${opt}`;
+        }
+        
+
+        var aRow1 = document.getElementById("t21");
+        var aRow2 = document.getElementById("t3");
+        var aRow3 = document.getElementById("t4");
+
+        function addFun1() {
+            aRow1.innerHTML += " <td><div class='row'><label class='lbl'>Course</label><select name='course'><% for(var i=0 ; i < course.length ; i++) { %><option name='<%= course[i].o_value %>' value='<%= course[i].o_value %>'><%= course[i].o_value %></option><% } %></select></div></td><td><div class='row'><label class='lbl'>Board/University</label><input type='text' name='board_university' id='board'></div></td><td><div class='row'><label class='lbl'>Percentage</label><input type='text' name='per' id='percentange'></div></td><td><div class='row'><label class='lbl'>Passing Year</label><input type='text' name='passing_year' id='passing_year'></div></td>";
+        }
+        function addfun2() {
+            aRow2.innerHTML += "<td><div class='row'><label class='lbl'>Company Name</label><input type='text' name='companyname' placeholder='Company Name'></div></td><td><div class='row'><label class='lbl'>Designation</label><input type='text' name='designation' placeholder='Designation'></div></td></tr><tr><td><div class='row'><label class='lbl'>CTC</label><input type='text' name='ctc' placeholder='ctc'></div></td><td><div class='row'><label class='lbl'>Start Date</label><input type='date' name='startdate'></div></td><td><div class='row'><label class='lbl'>End Date</label><input type='date' name='enddate'></div></td>";
+        }
+    </script>
+</body>
+
+</html>

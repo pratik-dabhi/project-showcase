@@ -1,0 +1,65 @@
+h1{
+    color: brown;
+}
+.container{
+    background-image: url(auth-bg.png);
+    height: 650px;
+}
+form{
+    padding-left: 70px;
+}
+.margin-bottom-30{
+    margin-bottom: 30px;
+}
+.bg-img{
+    text-align: left;
+    background-color: rgba(0,0,0,.5);
+    width: 30%;
+    height: 650px;
+    margin-left:150px;
+    padding: 0 16px;
+}
+.bg-img      img{
+    margin-bottom: 25px;
+    margin-top: 25px;
+}
+.bg-img input{
+    padding:5px 20px;
+    margin-bottom: 20px;
+}
+label{
+    color: white;
+}
+
+#signup-btn{
+    background-color: #174F2A;
+    padding:5px 98px;
+    color: white;
+
+}
+#a-pass1{
+    color: red;
+    margin-top: 0;
+}
+.alert-red{
+    color: red;
+    margin-top: 0;
+    font-size: smaller;
+}
+a{
+    color: #A4843F;
+    font-size: small;
+}
+.a-link{
+    padding-left: 70px;
+    font-size: small;
+}
+.botton-img{
+    margin-left: 150px;
+}
+#login_btn{
+    margin-top: 10px;
+    background-color: #174F2A;
+    padding:5px 98px;
+    color: white;
+}

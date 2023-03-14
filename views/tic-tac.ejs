@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-tac</title>
+    <style>
+        .site-container{
+            padding: 0 16px;
+            margin: 0 auto;
+        }
+        h1{
+            background-color: #2C3333;
+            color: white;
+            margin: 0;
+            padding: 15px;
+        }
+        .color-2{
+            padding: 5px;
+            background-color: #0E8388;
+            color: white;
+        }
+        .align-center{
+            text-align: center;
+        }
+        .just-center{
+            justify-content: space-around;
+        }
+        .flex-row{
+            display: flex;
+        }
+        td{
+            font-family: 'Times New Roman', Times, serif;
+            margin: 0px;
+            padding: 0px;
+            height: 130px;
+            width: 40px;
+            font-size: 70px;
+        }
+        #p1,#p2{
+            font-size: large;
+            font-family: 'Times New Roman', Times, serif;
+            text-align: center;
+            margin: 0;
+        }
+        .margin-bottom-50{
+            margin-bottom: 50px;
+        }
+        #table{
+            background:#cccc99;
+            color: #003300;
+        }
+        #reset{
+            font-size: larger;
+            font-family: 'Times New Roman', Times, serif;
+            margin-top: 20px;
+        }
+        .container{
+            display: flex;
+            justify-content: center;
+        }
+        input{
+            color:#cccc99;
+            background: #003300;
+            padding: 5px 15px;
+            border-radius: 25px;
+        }
+        ul li{
+            list-style: none;
+            padding:5px 15px;
+        }
+        .nav li a{
+            text-decoration: none;
+            color: white;
+        }
+        .align-flex{
+            display: flex;
+            align-items: center;
+            background-color: #2C3333;
+            color: white;
+            justify-content: space-between;
+        }
+
+    </style>
+</head>
+<body>
+    
+    <div class="site-container">
+        <div class="align-flex">
+            <div>
+                <h1 class="align-center">Tic Tac Toe</h1>
+            </div>            
+            <div class="align-flex">
+                <ul class="flex-row nav">
+                    <li><a href="/route/home">Home</a></li>
+                    <li><a href="/route/logout-api">Logout</a></li>
+                    <li><a href="#"><%= data.db_name%></a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="flex-row just-center margin-bottom-50 color-2">
+            <div class="">
+                <h2 id="winnerTxt">Start</h2>
+            </div>
+            <div class="">
+                <p id="p1">Player o wins matches :</p><br/>
+                <p id="p2">Player x wins matches :</p>
+            </div>    
+        </div>
+            <div class="container">
+            <table id="table" border="1px" style="height: 350px;width: 350px; text-align: center;">
+                
+                <tr>
+                    <td id="td1" onclick="sFun(this)"></td>
+                    <td id="td2" onclick="sFun(this)"></td>
+                    <td id="td3" onclick="sFun(this)"></td>
+                </tr>
+                <tr>
+                    <td id="td4" onclick="sFun(this)"></td>
+                    <td id="td5" onclick="sFun(this)"></td>
+                    <td id="td6" onclick="sFun(this)"></td>
+                </tr>
+                <tr>
+                    <td id="td7" onclick="sFun(this)"></td>
+                    <td id="td8" onclick="sFun(this)"></td>
+                    <td id="td9" onclick="sFun(this)"></td>
+                </tr>
+            </table>
+        </div>
+        <div class="container">
+            <input type="reset" onclick="reset()" value="RESET" id="reset"> 
+        </div>
+        
+    </div>
+<script>
+    pdFlag = 0;
+    pdCheck = 0;
+    function sFun(pd){
+    if(pdFlag == 0 && pd.innerHTML == "" && pdCheck == 0){
+        var win = document.getElementById("winnerTxt").innerHTML="Player 0's turn...";    
+        pd.innerHTML="x";
+        pdFlag=1;
+    }
+    else if(pd.innerHTML=="" && pdCheck == 0){
+        var win = document.getElementById("winnerTxt").innerHTML="Player x's turn... ";    
+        pd.innerHTML="o";
+        pdFlag=0;
+    }
+    val();
+    }
+   let pdCont1 = 0;
+   let pdCont2 = 0;
+    function val(){
+        var pd1 = document.getElementById("td1").innerHTML;
+        var pd2 = document.getElementById("td2").innerHTML;
+        var pd3 = document.getElementById("td3").innerHTML;
+        var pd4 = document.getElementById("td4").innerHTML;
+        var pd5 = document.getElementById("td5").innerHTML;
+        var pd6 = document.getElementById("td6").innerHTML;
+        var pd7 = document.getElementById("td7").innerHTML;
+        var pd8 = document.getElementById("td8").innerHTML;
+        var pd9 = document.getElementById("td9").innerHTML;
+
+        var pd123 = pd1+pd2+pd3;
+        var pd456 = pd4+pd5+pd6;
+        var pd789 = pd7+pd8+pd9;
+        var pd147 = pd1+pd4+pd7;
+        var pd258 = pd2+pd5+pd8;
+        var pd369 = pd3+pd6+pd9;
+        var pd159 = pd1+pd5+pd9;
+        var pd357 = pd3+pd5+pd7;
+    
+        if(!pdCheck){
+        if(pd123=="ooo" || pd456=="ooo"|| pd789=="ooo"|| pd147=="ooo"|| pd258=="ooo"|| pd369=="ooo"|| pd159=="ooo"|| pd357=="ooo") {
+        //Use for player 0 is winning..!!!
+        var win = document.getElementById("winnerTxt").innerHTML="Player 0 is won";
+        pdCont1++; // use to how many time player 0 is wins..!!
+        //alert("Player 0 win :"+pdCont1);
+        document.getElementById("p1").innerHTML="Player o wins matches :"+pdCont1;
+        pdCheck = 1;
+        //reset();
+        }
+
+        else if(pd123=="xxx"|| pd456=="xxx"|| pd789=="xxx"|| pd147=="xxx"|| pd258=="xxx"|| pd369=="xxx"|| pd159=="xxx"|| pd357=="xxx") {
+        //Use for player x is winning..!!!
+        var win = document.getElementById("winnerTxt").innerHTML="Player x is won";
+        pdCont2++;
+        //alert("Player x win :"+pdCont2);
+        document.getElementById("p2").innerHTML="Player x wins matches :"+pdCont2;
+        pdCheck = 1;
+        //reset();
+        }
+        else if(pd123.length==3 && pd456.length==3 && pd789.length==3 && pd147.length==3 && pd258.length==3 && pd369.length==3 && pd159.length==3 && pd357.length==3){
+            var win = document.getElementById("winnerTxt").innerHTML="Game is draw!!!";
+            reset();
+            // use for none is won or draw  the match
+        }}
+    }
+    function reset(){  // use to reset th game 
+        if(confirm("Restart the game again?")){
+            var win = document.getElementById("winnerTxt").innerHTML="Start";    
+            var pd1 = document.getElementById("td1").innerHTML="";
+            var pd2 = document.getElementById("td2").innerHTML="";
+            var pd3 = document.getElementById("td3").innerHTML="";
+            var pd4 = document.getElementById("td4").innerHTML="";
+            var pd5 = document.getElementById("td5").innerHTML="";
+            var pd6 = document.getElementById("td6").innerHTML="";
+            var pd7 = document.getElementById("td7").innerHTML="";
+            var pd8 = document.getElementById("td8").innerHTML="";
+            var pd9 = document.getElementById("td9").innerHTML="";
+            pdCheck=0;
+        } 
+    }
+    </script>
+</body>
+</html>

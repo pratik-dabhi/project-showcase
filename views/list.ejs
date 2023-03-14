@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List</title>
+    <style>
+          .flex-row{
+        display: flex;
+      }
+      ul li{
+            list-style: none;
+            padding:5px 15px;
+        }
+        .nav li a{
+            text-decoration: none;
+            color: white;
+        }
+        .align-flex{
+            display: flex;
+            align-items: center;
+            background-color: #2C3333;
+            color: white;
+            justify-content: space-between;
+        }
+        form{
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-1 flex-row align-flex">
+        <div>
+            <h1>
+                List of Data
+            </h1>
+        </div>
+        <div class="align-flex">
+            <ul class="flex-row nav">
+                <li><a href="/route/home">Home</a></li>
+                <li><a href="/route/logout-api">Logout</a></li>
+                <li><a href="#"><%= data1.db_name%></a></li>
+            </ul>
+        </div>
+    </div>  
+    <form action="/route/candidate_data/" method="get">
+    <div>
+        <input type="text" name='search' placeholder="search" value="<%= search %>">
+        <input type="submit" name='submit' value="submit" >
+        <p id="dem">Firstname(^)  |  Lastname($) || City (~) || Surname (#) ||  Designation (/) </p>
+    </div>
+    <table border="1px" id="r1">
+        <tr>
+            <td>Select</td>
+            <td>candidate_id</td>
+            <td>candidate_firstname</td>
+            <td>candidate_lastname</td>
+            <td>candidate_surname</td>
+            <td>candidate_designation</td>
+            <td>candidate_city</td>
+            <td>Delete</td>
+            <td>Edit</td>
+        </tr>
+        <% for(var i=0; i<data.length;i++){ %>
+            <tr>
+                <td><input type="checkbox"  id="c_box" name="select" value="<%= data[i].candidate_id %>" onchange="check()"></td>
+                <td id="c_id" value="<%= data[i].candidate_id %>"> <%= data[i].candidate_id %> </td>
+                <td><%= data[i].candidate_firstname %></td>
+                <td><%= data[i].candidate_lastname %></td>
+                <td><%= data[i].candidate_surname %></td>
+                <td><%= data[i].candidate_designation %></td>
+                <td><%= data[i].candidate_city %></td>
+                <td id="t1" onclick="deleteFun('<%= data[i].candidate_id %>')">Delete</td>
+                <td id="e1" onclick="editFun('<%= data[i].candidate_id %>')"><a href='/route/edit-api?c_id=<%=data[i].candidate_id%>'>Edit</a></td>
+            </tr>    
+         <% } %>
+    </table><br/>
+    <span  onclick="deleteAll()">DeleteAll</span>
+</form>
+
+<script>
+     async function deleteFun(candidate){
+         if(window.confirm('Are you sure to delete row no '+candidate+'?')){
+            const result = await fetch(`/route/delete-api?c_id=${candidate}`);
+            const data1 = await result.json();
+            let r1 = document.getElementById('r1');
+            let opt='<tr><td>Select</td><td>candidate_id</td><td>candidate_firstname</td><td>candidate_lastname</td><td>candidate_surname</td><td>candidate_designation</td><td>candidate_city</td><td>Delete</td><tr>'
+            data1.result.forEach(e => {
+                let c_id=e.candidate_id;
+                let c_fname =e.candidate_firstname;
+                let c_lname =e.candidate_lastname;
+                let c_sname = e.candidate_surname;
+                let c_des =e.candidate_designation;
+                let c_city=e.candidate_city;
+                opt += `<tr><td><input type="checkbox"  id="c_box" name="select" value="${c_id}" onchange="check()"></td><td>${c_id}</td><td>${c_fname}</td><td>${c_lname}</td><td>${c_sname}</td><td>${c_des}</td><td>${c_city}</td><td onclick="deleteFun('${c_id}')">Delete</td></tr>`;  
+               
+            });
+            r1.innerHTML=`${opt}`;
+         }
+    }
+
+
+    async function deleteAll(){
+        
+        if(window.confirm('Are you sure to delete all ?')){
+            const result = await fetch(`/route/delete-all-api`,{
+                method:'POST',
+                headers:{
+                    'Content-type':'application/json'
+                },
+                body: JSON.stringify({arrid : arr })
+            });
+    
+            const data1 = await result.json();
+            let r1 = document.getElementById('r1');
+            let opt='<tr><td>Select</td><td>candidate_id</td><td>candidate_firstname</td><td>candidate_lastname</td><td>candidate_surname</td><td>candidate_designation</td><td>candidate_city</td><td>Delete</td><tr>'
+            data1.result.forEach(e => {
+                let c_id=e.candidate_id;
+                let c_fname =e.candidate_firstname;
+                let c_lname =e.candidate_lastname;
+                let c_sname = e.candidate_surname;
+                let c_des =e.candidate_designation;
+                let c_city=e.candidate_city;
+                opt += `<tr><td><input type="checkbox"  id="c_box" name="select" value="${c_id}" onchange="check()"></td><td>${c_id}</td><td>${c_fname}</td><td>${c_lname}</td><td>${c_sname}</td><td>${c_des}</td><td>${c_city}</td><td onclick="deleteFun('${c_id}')">Delete</td></tr>`;  
+            });
+            r1.innerHTML=`${opt}`;
+        }
+    }
+    let arr=[];
+    function check(){
+        let count=0;
+        arr=[];
+        let allChb = document.querySelectorAll("#c_box"); 
+        allChb.forEach(e =>{
+            if(e.checked){
+            count+=1;
+            arr.push(e.value)
+            }
+        })
+    }
+
+    async function editFun(candidate){
+        window.confirm("Are you sure to edit this"+candidate);
+        const result = await fetch(`/route/edit-api?c_id=${candidate}`);
+    }
+</script>
+</body>
+</html>
