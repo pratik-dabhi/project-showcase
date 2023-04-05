@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,50 +8,89 @@
     <title>Page</title>
     <style>
         #overlay {
-            position: fixed; /* Sit on top of the page content */
-            display: none; /* Hidden by default */
-            width: 100%; /* Full width (cover the whole page) */
-            height: 100%; /* Full height (cover the whole page) */
+            position: fixed;
+            /* Sit on top of the page content */
+            display: none;
+            /* Hidden by default */
+            width: 100%;
+            /* Full width (cover the whole page) */
+            height: 100%;
+            /* Full height (cover the whole page) */
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
-            background-color: rgba(0,0,0,0.7); /* Black background with opacity */
-            z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
-            cursor: pointer; /* Add a pointer on hover */
-            }
-
-            .flex-row{
-        display: flex;
-      }
-      ul li{
-            list-style: none;
-            padding:5px 15px;
+            background-color: rgba(0, 0, 0, 0.7);
+            /* Black background with opacity */
+            z-index: 2;
+            /* Specify a stack order in case you're using a different order for other elements */
+            cursor: pointer;
+            /* Add a pointer on hover */
         }
-        .nav li a{
+
+        .flex-row {
+            display: flex;
+        }
+
+        ul li {
+            list-style: none;
+            padding: 5px 15px;
+        }
+
+        .nav li a {
             text-decoration: none;
             color: white;
         }
-        .align-flex{
+
+        .align-flex {
             display: flex;
             align-items: center;
             background-color: #2C3333;
             color: white;
             justify-content: space-between;
         }
+
+        tr td {
+            width: 200px;
+        }
+
+        .pagination a {
+            color: black;
+            float: left;
+            padding: 8px 16px;
+            text-decoration: none;
+            transition: background-color .3s;
+        }
+
+        /* .pagination a.active {
+            background-color: dodgerblue;
+            color: white;
+        } */
+
+        .pagination a:hover{
+            background-color: #ddd;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
+
 <body>
     <div id="overlay"></div>
     <div class="align-flex">
         <div>
             <h1 class="align-center">Pagination</h1>
-        </div>            
+        </div>
         <div class="align-flex">
             <ul class="flex-row nav">
-                <li><a href="/route/home">Home</a></li>
-                <li><a href="/route/logout-api">Logout</a></li>
-                <li><a href="#"><%= data.db_name%></a></li>
+                <li><a href="/home">Home</a></li>
+                <li><a href="/logout-api">Logout</a></li>
+                <li><a href="#">
+                        <%= data.db_name%>
+                    </a></li>
             </ul>
         </div>
     </div>
@@ -59,61 +99,97 @@
         <table border="1px" id="t1">
             <tr style="background-color: darkgray;">
                 <td>student_id</td>
-                <td >student_firstname</td>
+                <td>student_firstname</td>
                 <td>student_lastname</td>
                 <td>student_contact</td>
                 <td>student_email</td>
                 <td>student_college</td>
                 <td>student_city</td>
-                <td>create_date</td>
+                <!-- <td>create_date</td> -->
             </tr>
 
             <% for(var i=0; i < data.length ; i++ ){ %>
-            <tr style="background-color: lightgray;">
-                <td><%= data[i].student_id %></td>
-                <td><%= data[i].student_firstname %></td>
-                <td><%= data[i].student_lastname %> </td>
-                <td><%= data[i].student_contact %></td>
-                <td><%= data[i].student_email %></td>
-                <td><%= data[i].student_college %></td>
-                <td><%= data[i].student_city %></td>
-                <td><%= data[i].create_date %></td>
-            </tr>
-            <% } %>
-        </table><br/>  
+                <tr style="background-color: lightgray;">
+                    <td>
+                        <%= data[i].student_id %>
+                    </td>
+                    <td>
+                        <%= data[i].student_firstname %>
+                    </td>
+                    <td>
+                        <%= data[i].student_lastname %>
+                    </td>
+                    <td>
+                        <%= data[i].student_contact %>
+                    </td>
+                    <td>
+                        <%= data[i].student_email %>
+                    </td>
+                    <td>
+                        <%= data[i].student_college %>
+                    </td>
+                    <td>
+                        <%= data[i].student_city %>
+                    </td>
+                    <!-- <td><%=// data[i].create_date %></td> -->
+                </tr>
+                <% } %>
+        </table><br />
     </div>
- 
-    <div>
-        <h1> <%let count1 = Math.ceil(countNum / limit)%></h1>
-        
-        <% for(var i=1 ; i < count1 +1 ; i++) { %>
-            <a onclick="pagAs('<%= i %>')"> <%= i %></a>|
-            <% } %>
+
+    <div class="pagination" id="p-1">
+        <% let count1=Math.ceil(countNum / limit)%>
+
+            <% for(var i=1 ; i <=10 ; i++) { %>
+                <% if( i==1){ %>
+                    <a onclick="pagAs('<%= i %>')" class="" style="background-color: #2C3333;color: white;">
+                        <%= i %>
+                    </a>
+
+                    <%} else { %>
+                        <a onclick="pagAs('<%= i %>')" class="">
+                            <%= i %>
+                        </a>
+                        <%} } %>
     </div>
     <script>
-        async function pagAs(page){
-            document.getElementById('overlay').style.display='block';
+        async function pagAs(page) {
+            document.getElementById('overlay').style.display = 'block';
             let num = document.getElementById('num');
-            num.innerHTML=('PAGE ' +`${page}`)
-            const result = await fetch(`/route/data-api?page=${page}`);
+            num.innerHTML = ('PAGE ' + `${page}`)
+            const result = await fetch(`/data-api?page=${page}`);
             const data = await result.json();
             let t1 = document.getElementById('t1');
-            let opt= `<tr style="background-color: darkgray;"><td>student_id</td><td>student_firstname</td><td>student_lastname</td><td>student_contact</td><td>student_email</td><td>student_college</td><td>student_city</td><td >create_date</td></tr>`;
+            let opt = `<tr style="background-color: darkgray;"><td>student_id</td><td>student_firstname</td><td>student_lastname</td><td>student_contact</td><td>student_email</td><td>student_college</td><td>student_city</td></tr>`;
             data.result.forEach(e => {
                 let s_id = e.student_id;
                 let s_fname = e.student_firstname;
                 let s_lname = e.student_lastname;
-                let s_contact =e.student_contact;
-                let s_email =e.student_email;
+                let s_contact = e.student_contact;
+                let s_email = e.student_email;
                 let s_college = e.student_college;
                 let s_city = e.student_city;
                 let s_date = e.create_date;
-                opt += `<tr style="background-color: lightgray;"><td>${s_id}</td><td>${s_fname}</td><td>${s_lname}</td><td>${s_contact}</td><td>${s_email}</td><td>${s_college}</td><td>${s_city}</td><td >${s_date}</td></tr>`;    
+                opt += `<tr style="background-color: lightgray;"><td>${s_id}</td><td>${s_fname}</td><td>${s_lname}</td><td>${s_contact}</td><td>${s_email}</td><td>${s_college}</td><td>${s_city}</td></tr>`;
             });
-            console.log(opt);
-            t1.innerHTML=(`${opt}`);
-            setTimeout("document.getElementById('overlay').style.display='none '",1000);
+            // console.log(opt);
+            t1.innerHTML = (`${opt}`);
+            setTimeout("document.getElementById('overlay').style.display='none '", 1000);
+
+            let par = ``;
+            for (var i = 1; i <= 10; i++) {
+                if (i == page) {
+                    par += `<a onclick="pagAs('${i}')" class="" style="background-color:#2C3333 ; color:white">${i}</a>`
+                }
+                else {
+                    par += `<a onclick="pagAs('${i}')" class="">${i}</a>`
+                }
+            };
+
+            let a = document.getElementById('p-1');
+            a.innerHTML = `${par}`;
         }
     </script>
 </body>
+
 </html>

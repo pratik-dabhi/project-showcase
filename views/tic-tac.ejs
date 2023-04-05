@@ -93,8 +93,8 @@
             </div>            
             <div class="align-flex">
                 <ul class="flex-row nav">
-                    <li><a href="/route/home">Home</a></li>
-                    <li><a href="/route/logout-api">Logout</a></li>
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/logout-api">Logout</a></li>
                     <li><a href="#"><%= data.db_name%></a></li>
                 </ul>
             </div>
@@ -129,7 +129,7 @@
             </table>
         </div>
         <div class="container">
-            <input type="reset" onclick="reset()" value="RESET" id="reset"> 
+            <input type="reset" onclick="reset()" value="RESET" id="reset" disabled> 
         </div>
         
     </div>
@@ -162,6 +162,15 @@
         var pd8 = document.getElementById("td8").innerHTML;
         var pd9 = document.getElementById("td9").innerHTML;
 
+        if(pd1 != '' || pd2 != ''|| pd3 != '' || pd4 != '' || pd5 != '' || pd6 != '' || pd7 != '' || pd8 != '' || pd9 != ''){
+            let button = document.getElementById("reset");
+            console.log('trueee');
+            button.disabled = false;
+        }else{
+            console.log('falsse');
+            button.disabled = true;
+        }
+
         var pd123 = pd1+pd2+pd3;
         var pd456 = pd4+pd5+pd6;
         var pd789 = pd7+pd8+pd9;
@@ -193,7 +202,7 @@
         }
         else if(pd123.length==3 && pd456.length==3 && pd789.length==3 && pd147.length==3 && pd258.length==3 && pd369.length==3 && pd159.length==3 && pd357.length==3){
             var win = document.getElementById("winnerTxt").innerHTML="Game is draw!!!";
-            reset();
+            // reset();
             // use for none is won or draw  the match
         }}
     }
@@ -209,6 +218,8 @@
             var pd7 = document.getElementById("td7").innerHTML="";
             var pd8 = document.getElementById("td8").innerHTML="";
             var pd9 = document.getElementById("td9").innerHTML="";
+            let button = document.getElementById("reset");
+            button.disabled = true;
             pdCheck=0;
         } 
     }

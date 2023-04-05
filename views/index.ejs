@@ -8,9 +8,12 @@
     <title>Form</title>
     <style>
         label{
-            margin-right: 5px;
+            margin:0px 5px;
         }
-
+        /* .lbl{
+            display: flex;
+            width: 100px;
+        } */
         #container{
             margin: 0px auto;
             padding: 0px 16px;
@@ -32,10 +35,6 @@
             margin-bottom: 25px;
             margin-right: 5px;
 
-        }
-
-        #tr1 {
-            margin-bottom: 25px;
         }
 
         form {
@@ -76,84 +75,84 @@
             </div>
             <div class="align-flex">
                 <ul class="flex-row nav">
-                    <li><a href="/route/home">Home</a></li>
-                    <li><a href="/route/logout-api">Logout</a></li>
+                    <li><a href="/home">Home</a></li>
+                    <li><a href="/logout-api">Logout</a></li>
                     <li><a href="#"><%= data.db_name%></a></li>
                 </ul>
             </div>
         </div>    
-        <form action="/route/candidate-details/" method="post">
+        <form action="/candidate-details/" method="post">
             <fieldset class="f1">
                 <legend>Basic Details</legend>
                 <table class="t1">
-                    <tr>
+                    <tr class="flex-row">
                         <td>
                             <div class="row">
                                 <label class="lbl">First Name</label>
-                                <input type="text" value="" name="firstname" id="first_name">
+                                <input type="text" value="" name="firstname" id="first_name" required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Last Name</label>
-                                <input type="text" value="" name="lastname" id="last_name">
+                                <input type="text" value="" name="lastname" id="last_name" required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Surname</label>
-                                <input type="text" value="" name="surname" id="surname">
+                                <input type="text" value="" name="surname" id="surname" required>
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="flex-row">
                         <td>
                             <div class="row">
                                 <label class="lbl">Designation</label>
-                                <input type="text" value="" name="des" id="designation">
+                                <input type="text" value="" name="des" id="designation" required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Email</label>
-                                <input type="email" value="" name="email" id="email">
+                                <input type="email" value="" name="email" id="email" required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Contact</label>
-                                <input type="tel" name="contact" id="contact">
+                                <input type="tel" name="contact" id="contact" required>
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="flex-row">
                         <td>
                             <div class="row">
                                 <label class="lbl">Address1</label>
-                                <input type="text" name="address1" id="address_1">
+                                <input type="text" name="address1" id="address_1" required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Address2</label>
-                                <input type="text" name="address2" id="address_2">
+                                <input type="text" name="address2" id="address_2" required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Zipcode</label>
-                                <input type="text" name="zipcode" id="zipcode">
+                                <input type="text" name="zipcode" id="zipcode" required>
                             </div>
                         </td>
                     </tr>
-                    <tr id="tr1">
+                    <tr class="flex-row">
                         <td>
                             <div>
                                 <label class="lbl">State</label>
                                 <select name="state" id="s1" onchange="showCity()">
                                     <option disabled hidden selected>SELECT</option>
                                     <% for(var i=0 ; i<state.length ; i++){ %>
-                                        <option name="<%=state[i].state_value%>" value="<%= state[i].state_value%>" id="<%= state[i].state_id%>"> <%= state[i].state_value %> </option>
+                                        <option name="<%=state[i].state_value%>" value="<%= state[i].state_value%>" id="<%= state[i].state_id%>" required> <%= state[i].state_value %> </option>
                                         <% } %>    
                                     </select>
                                 </div>
@@ -161,28 +160,28 @@
                             <td>
                                 <div class="row">
                                     <label class="lbl">City</label>
-                                    <select name="city" id="city_com">
-                                        
+                                    <select name="city" id="city_com" required>
+                                        <option disabled hidden selected>SELECT</option>
                                     </select>
                                 </div>
                             </td>
                     </tr>
-                    <tr>
+                    <tr class="flex-row">
                         <td>
                             <div class="row">
                                 <label class="lbl">Gender</label>
                                 <% for(var i=0 ; i < gender.length ; i++) { %>
-                                    <input type="radio" name="gender" value="<%= gender[i].o_value %>">
+                                    <input type="radio" name="gender" value="<%= gender[i].o_value %>" required>
                                     <%= gender[i].o_value %>
                                         <% } %>
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="flex-row">
                         <td>
                             <div class="row">
                                 <label class="lbl"> Relationship Status</label>
-                                <select name="rstatus">
+                                <select name="rstatus" required>
                                     <% for(var i=0;i < rel.length ; i++) {%>
                                         <option name="<%= rel[i].o_value %>" value="<%= rel[i].o_value%>">
                                             <%= (rel[i].o_value).toUpperCase()%>
@@ -194,7 +193,7 @@
                         <td>
                             <div class="row">
                                 <label class="lbl">DOB</label>
-                                <input type="date" name="date" id="dob_date">
+                                <input type="date" name="date" id="dob_date" required>
                             </div>
                         </td>
                     </tr>
@@ -209,7 +208,7 @@
                         <td>
                             <div class="row">
                                 <label class="lbl">Course</label>
-                                <select name="course">
+                                <select name="course" required>
                                     <% for(var i=0 ; i < course.length ; i++) { %>
                                         <option name="<%= course[i].o_value %>" value="<%= course[i].o_value %>">
                                             <%= course[i].o_value %>
@@ -221,19 +220,19 @@
                         <td>
                             <div class="row">
                                 <label class="lbl">Board/University</label>
-                                <input type="text" name="board_university" id="board">
+                                <input type="text" name="board_university" id="board" required required required required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Percentage</label>
-                                <input type="text" name="per" id="percentange">
+                                <input type="text" name="per" id="percentange" required required required required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Passing Year</label>
-                                <input type="text" name="passing_year" id="passing_year">
+                                <input type="text" name="passing_year" id="passing_year" required required required required>
                             </div>
                         </td>
                         <td>
@@ -253,13 +252,13 @@
                         <td>
                             <div class="row">
                                 <label class="lbl">Company Name</label>
-                                <input type="text" name="companyname" id="company_name" placeholder="Company Name">
+                                <input type="text" name="companyname" id="company_name" placeholder="Company Name" required required required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Designation</label>
-                                <input type="text" name="designation" id="designation" placeholder="Designation">
+                                <input type="text" name="designation" id="designation" placeholder="Designation" required required required>
                             </div>
                         </td>
                     </tr>
@@ -267,19 +266,19 @@
                         <td>
                             <div class="row">
                                 <label class="lbl">CTC</label>
-                                <input type="text" name="ctc" id="ctc" placeholder="ctc">
+                                <input type="text" name="ctc" id="ctc" placeholder="ctc" required required required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">Start Date</label>
-                                <input type="date" id="start_date" name="startdate">
+                                <input type="date" id="start_date" name="startdate" required required required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label class="lbl">End Date</label>
-                                <input type="date" id="end_date" name="enddate">
+                                <input type="date" id="end_date" name="enddate" required required required>
                             </div>
                         </td>
                         <td>
@@ -341,25 +340,25 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="flex-row">
                         <td>
                             <div class="row">
                                 <label>Name</label>
-                                <input type="text" name="rname1" id="reference_name1" placeholder="Reference Name">
+                                <input type="text" name="rname1" id="reference_name1" placeholder="Reference Name" required required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label>Contact number</label>
                                 <input type="tel" name="cnumber1" id="reference_number1"
-                                    placeholder="Contact number">
+                                    placeholder="Contact number" required required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label>Relation</label>
                                 <input type="text" name="relation1" id="relation1"
-                                    placeholder="Relation(Ex.Father,Uncle)">
+                                    placeholder="Relation(Ex.Father,Uncle)" required required>
                             </div>
                         </td>
                     </tr>
@@ -371,26 +370,26 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
+                    <tr class="flex-row">
                         <td>
                             <div class="row">
                                 <label>Name</label>
                                 <input type="text" name="rname2" id="reference_name2"
-                                    placeholder="Reference Name">
+                                    placeholder="Reference Name" required required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label>Contact number</label>
                                 <input type="tel" name="cnumber2" id="reference_number1"
-                                    placeholder="Contact number">
+                                    placeholder="Contact number" required required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label>Relation</label>
                                 <input type="text" name="relation2" id="relation1"
-                                    placeholder="Relation(Ex.Father,Uncle)">
+                                    placeholder="Relation(Ex.Father,Uncle)" required required>
                             </div>
                         </td>
                     </tr>
@@ -404,7 +403,7 @@
                         <td>
                             <div class="row">
                                 <label>Prefer Location</label>
-                                <select name="location">
+                                <select name="location" required>
                                     <% for(var i=0 ; i < loc.length ; i++) { %>
                                         <option name="<%= loc[i].o_value %>">
                                             <%= loc[i].o_value %>
@@ -416,13 +415,13 @@
                         <td>
                             <div class="row">
                                 <label>Expected CTC</label>
-                                <input type="text" name="expected_ctc" id="expected_ctc" placeholder="Expected CTC">
+                                <input type="text" name="expected_ctc" id="expected_ctc" placeholder="Expected CTC" required>
                             </div>
                         </td>
                         <td>
                             <div class="row">
                                 <label>Current CTC</label>
-                                <input type="text" name="current_ctc" id="current_ctc" placeholder="Current CTC">
+                                <input type="text" name="current_ctc" id="current_ctc" placeholder="Current CTC" required>
                             </div>
                         </td>
                     </tr>
@@ -447,7 +446,7 @@
         async function showCity() {
             
             let state = document.getElementById("s1");        
-            const result = await fetch(`/route/city-api?id=${state.value}`);
+            const result = await fetch(`/city-api?id=${state.value}`);
             const city1 = await result.json();
             let  city_com = document.getElementById('city_com');
             let opt=''; 

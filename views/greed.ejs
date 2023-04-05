@@ -20,74 +20,124 @@
         .align-flex{
             display: flex;
             align-items: center;
-            background-color: #2C3333;
+            background-color: #674188;
             color: white;
             justify-content: space-between;
         }
         .save-btn{
             color:white;
-            background: #2C3333;
+            background: #674188;
             padding: 5px 15px;
             border-radius: 25px;
+            margin: 0px 10px;
+        }
+        .flex-just{
+          display: flex;
+          justify-content: center;
+        }
+        tr td{
+          width: 150px;
+          text-align: center;
+                  }
+
+        .edit-btn{
+          background-color: #674188;
+          color: white;
+          padding: 0px 15px;
+          border-radius: 15px;
+        }
+        input[type=text]{
+          width: 80%;
+          border: 1px solid #674188;
+        }
+
+        ul li{
+            list-style: none;
+            padding:5px 15px;
+        }
+        .nav li a{
+            text-decoration: none;
+            color: white;
+        }
+        .flex-row{
+        display: flex;
+      }
+        .align-flex{
+            display: flex;
+            align-items: center;
+            background-color: #2C3333;
+            color: white;
+            justify-content: space-between;
+        }
+        .bottom-50{
+          margin-bottom: 50px;
         }
     </style>
   </head>
   <body>
-    <div class="align-flex">
+
+    <div class="align-flex bottom-50">
       <div>
-          <h1>
-              Greed
-          </h1>
-      </div>
+          <h1 class="align-center">Greed</h1>
+      </div>            
       <div class="align-flex">
           <ul class="flex-row nav">
-              <li><a href="/route/home">Home</a></li>
-              <li><a href="/route/logout-api">Logout</a></li>
+              <li><a href="/home">Home</a></li>
+              <li><a href="/logout-api">Logout</a></li>
               <li><a href="#"><%= data.db_name%></a></li>
           </ul>
       </div>
-  </div>   
-      <form action="/route/update-api-all" method="post">
+  </div>
+  
+      <form action="/update-api-all" method="post">
         <table border="1px" id="t1">
-          <tr style="background-color: darkgray">
+          <tr style="background-color: #674188 ; color: #FFF" >
             <td>Id</td>
-            <td>firstname</td>
-            <td>lastname</td>
-            <td>surname</td>
-            <td>contact</td>
-            <td>email</td>
-            <td>city</td> 
-            <td></td>
+            <td>Firstname</td>
+            <td>Lastname</td>
+            <td>Surname</td>
+            <td>Contact</td>
+            <td>Email</td>
+            <td>City</td> 
+            <td>Edit</td>
+            <td>Delete</td>
           </tr>
           <% for(var i=0 ; i<a1.length;i++){ %>
-          <tr style="background-color: lightgray">
+          <tr style="background-color: #C3ACD0" id="<%= a1[i].table_id %>">
             <td>
-              <input type="text" value="<%= a1[i].table_id %>" name="candidate_id" id="candidate_id" hidden>
-                <%= a1[i].table_id %>
+              <!-- <input type="text" value="<%= a1[i].table_id %>" name="candidate_id" id="candidate_id" hidden> -->
+                <%= i+1%>
             </td>
             <td>
-              <input type="text" name="firstname" value="<%= a1[i].firstname %>"/>
+              <!-- <input type="text" name="firstname" value=""/> -->
+              <%= a1[i].firstname %>
             </td>
             <td>
-              <input type="text" name="lastname" value="<%= a1[i].lastname %>"/>
+              <!-- <input type="text" name="lastname" value=""/> -->
+              <%= a1[i].lastname %>
             </td>
             <td>
-              <input type="text" name="surname" value="<%= a1[i].surname %>" />
+              <!-- <input type="text" name="surname" value="" /> -->
+              <%= a1[i].surname %>
             </td>
             <td>
-              <input type="text" name="contact" value="<%= a1[i].contact %>" />
+              <!-- <input type="text" name="contact" value="" /> -->
+              <%= a1[i].contact %>
             </td>
             <td>
-              <input type="text" name="email" value="<%= a1[i].email %>" />
+              <!-- <input type="text" name="email" value="" /> -->
+              <%= a1[i].email %>
             </td>
             <td>
-                <input type="text" name="city" value="<%= a1[i].city %>" />
+                <!-- <input type="text" name="city" value="" /> -->
+                <%= a1[i].city %>
               </td>
-            <td><span onclick="update(this)" id="<%= a1[i].table_id %>">save</span></td>
+            <td><span onclick="update(this)" id="<%= a1[i].table_id %>" class="edit-btn">Edit</span></td>
+            <td><span onclick="deleteData('<%= a1[i].table_id %>')" id="<%= a1[i].table_id %>" class="edit-btn">Delete</span></td>
             </tr>
           <% } %>
         </table><br>
-        <div>
+        <div class="flex-just">
           <span onclick="add()" class="save-btn">add </span>
           <input type="submit" value='SAVE ALL' class="save-btn">
         </div>
@@ -97,7 +147,7 @@
     <script>
       function add() {
         let opt =
-          `<tr style="background-color: lightgray">
+          `<tr style="background-color: #C3ACD0 ; color: #FFF">
             <td>
             </td>
             <td>
@@ -118,34 +168,78 @@
             <td>
                 <input type="text" name="city" />
               </td>
-            <td><span onclick="update(this)" id="">save</span></td>            
+            <td><span onclick="updateData(this)" id="" class="edit-btn">Save</span></td>            
+            <td><span onclick="deleteData(this)" id="" class="edit-btn">Delete</span></td>            
             </tr>`;
         document.querySelector("tbody").innerHTML += opt;
       }
 
       async function update(pratik) {
-        window.confirm('Are you sure to save?')
         let id = pratik.getAttribute('id');
+        console.log('Front id' ,id);
+        let rowId = pratik.parentNode;
+        let row = rowId.parentNode;
+        const response =await fetch(`/fetch-data?id=${id}`);
+        let result = await response.json();
+
+        if(id.length != 0){
+        row.innerHTML = `
+        <td>
+              <input type="text" value="${result.a1[0].table_id}" name="candidate_id" id="candidate_id" hidden>
+              ${result.a1[0].table_id}
+            </td>
+            <td>
+              <input type="text" name="firstname" value="${result.a1[0].firstname}"/>
+            </td>
+            <td>
+              <input type="text" name="lastname" value="${result.a1[0].lastname}" />
+            </td>
+            <td>
+              <input type="text" name="surname" value="${result.a1[0].surname}" />
+            </td>
+            <td>
+              <input type="text" name="contact" value="${result.a1[0].contact}" />
+            </td>
+            <td>
+              <input type="text" name="email" value="${result.a1[0].email}" />
+            </td>
+            <td>
+                <input type="text" name="city" value="${result.a1[0].city}" />
+              </td>
+            <td><span onclick= "updateData(this)" id="${result.a1[0].table_id}" class="edit-btn">Save</span></td>
+            <td><span onclick="deleteData(this)" id="" class="edit-btn">Delete</span></td>  `;
+        }
+      }
+
+      async function  updateData(pratik){
+        let id = pratik.getAttribute('id'); 
         let rowId = pratik.parentNode;
         let row = rowId.parentNode;
         let tds = row.children;
         let arr=[]; 
-         for (let x of tds) {
+        for (let x of tds) {
             let y = x.childNodes[1];
-           if(y) arr.push(y.value)  
+           if(y) arr.push(y.value) 
          }
-         console.log('arar 94 -- ',arr);
-         const result = await fetch(`/route/data-api`,{
+
+         const result = await fetch(`/data-api`,{
             method:"POST",
             headers:{
                 'Content-Type':'application/json'
             },
             body:JSON.stringify({arr:arr,id:id})            
          });
-         location.reload();
+        location.reload();
       }
+    
+    async function deleteData(id){
+
+      let deleteData = await fetch(`/delete-greed-api?id=${id}`);
+      let result = await deleteData.json();
+      location.reload(); 
+
+    }
     </script>
   </body>
 </html>
-
 

@@ -49,7 +49,7 @@
 <body>
     <h1 style="text-align:center;"> Edit Form</h1>
     <div class="container">
-        <form action="/route/update-api/" method="post">
+        <form action="/update-api/" method="post">
             <fieldset class="f1">
                 <legend>Basic Details</legend>
                 <table class="t1">
@@ -513,7 +513,7 @@
         async function showCity() {
             let ans;
             let state = document.getElementById("s1");        
-            const result = await fetch(`/route/city-api?id=${state.value}`);
+            const result = await fetch(`/city-api?id=${state.value}`);
             const city1 = await result.json();
             console.log('518----',city1);
             let  city_com = document.getElementById('city_com');
@@ -532,7 +532,7 @@
         showCity();
 
         async function save(candidate){
-            const result = await fetch(`/route/update-api?c_id=${candidate}`);
+            const result = await fetch(`/update-api?c_id=${candidate}`);
             const res1 =await result.json();
         }
 

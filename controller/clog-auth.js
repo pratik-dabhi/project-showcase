@@ -6,15 +6,16 @@ const con =require("../db");
 const cookieParser = require("cookie-parser");
 app.use(cookieParser)
 
-exports.register_page = (req,res)=>{
+const register_page = (req,res)=>{
     res.render('register');
 }
 
-exports.login_page = (req,res)=>{
+const login_page = (req,res)=>{
     res.render('login',{err_msg:''});
 }
 
-exports.register = async(req,res)=>{
+
+const register = async(req,res)=>{
     let name = req.body.name;
     let email = req.body.email;
     let password = req.body.password;
@@ -27,7 +28,7 @@ exports.register = async(req,res)=>{
     res.render('login_link',{email:email});
 }
 
-exports.login = async(req,res)=>{
+const login = async(req,res)=>{
     let email = req.body.email;
     let password = req.body.password;
     let pass;
@@ -49,7 +50,7 @@ exports.login = async(req,res)=>{
          else if(result == true && db_act_code == 1){
             let t = jwt.sign({db_name:db_name,email:db_email,code:db_act_code},'pratik');
             res.cookie("user",t);
-            res.redirect('/route/home');
+            res.redirect('/home');
          }
          else{
             res.render('login',{err_msg:'Incorrect username or Password!'})        
@@ -60,50 +61,52 @@ exports.login = async(req,res)=>{
     }
 }
 
-exports.logout = (req,res)=>{
+const logout = (req,res)=>{
     res.clearCookie("user");
     res.render('login',{err_msg:''});
 }
 
-exports.home = (req,res)=>{
+const home = (req,res)=>{
     let data = req.data;
     res.render('home',{data:data});
 }
 
-exports.activation = async(req,res)=>{
+const activation = async(req,res)=>{
     let email = req.query.email;
     let q1 = `update authentication_table set activation_code='1' where auth_email='${email}'`;
     let a1 =await con.query(q1);
-    res.redirect('/route/login-page');
+    res.redirect('/login-page');
 }
 
-exports.login_link = (req,res)=>{
+const login_link = (req,res)=>{
     res.render('login_link');
 }
 
-exports.email_api = async(req,res)=>{
+const email_api = async(req,res)=>{
     let email = req.query.email;
     let q1 = `select auth_email from authentication_table where auth_email='${email}'`;
     let [a1] = await con.query(q1);
     res.json({a1})
 }
 
-exports.tik_tac = async(req,res)=>{
+const tik_tac = async(req,res)=>{
     let data = req.data;
     res.render('tic-tac',({data:data}));
 }
 
-exports.color_cube = async(req,res)=>{
+const color_cube = async(req,res)=>{
     let data = req.data;
     res.render('colorCube',({data:data})); 
 }
 
-exports.ehya = async(req,res)=>{
+const ehya = async(req,res)=>{
     let data = req.data;
     res.render('ehya',({data:data})); 
 }
-exports.ehya2 = async(req,res)=>{
+const ehya2 = async(req,res)=>{
     let data = req.data;
     res.render('ehya2',({data:data})); 
 }
+
+module.exports = {register_page,login_page,register,login,logout,home,activation,login_link,email_api,tik_tac,color_cube,ehya,ehya2}
 

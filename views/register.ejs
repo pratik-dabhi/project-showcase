@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <div class="bg-img padding-rl">
-        <form method="post" action="/route/register" onSubmit="return validate()">
+        <form method="post" action="/register" onSubmit="return validate()">
             <div>
                 <img src="logo.svg" alt="">
             </div>
@@ -58,7 +58,7 @@
             </div>
         </form>
         <div class="a-link">
-            <label>Already have an account?<a href="/route/login-page">Login Here</a></label>
+            <label>Already have an account?<a href="/login-page">Login Here</a></label>
         </div>
     </div>
     </div>
@@ -156,7 +156,7 @@
             let email_span =document.getElementById('email-span');
             let sign = document.getElementById('signup-btn');
 
-             const result = await fetch(`/route/email-api?email=${email}`);
+             const result = await fetch(`/email-api?email=${email}`);
              const data  = await result.json();
     
             if(data.a1.length != 0){

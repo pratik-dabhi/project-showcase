@@ -26,7 +26,6 @@ Router.get('/email-api',clogAuth.email_api);
 
 Router.get('/tic-tac-toe',authToken,clogAuth.tik_tac);
 
-
 Router.get('/color-cube',authtoken,clogAuth.color_cube);
 
 Router.get('/ehya',authToken,clogAuth.ehya);

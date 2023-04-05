@@ -1,9 +1,19 @@
-h1{
-    margin-top: 250px;
-    color: red;
-    text-align: center;
+
+.line-height{
+    line-height: 100px;
 }
-.activate-link{
-    text-align: center;
-    align-items: center;
+.font-size h1{
+    font-size: 5rem;
+}
+.font-size p{
+    font-size: 2rem;
+}
+
+#activate{
+    /* width: 100px;
+    height: 100px; */
+    color: #1A5F7A;
+}
+#activate-btn{
+    background-color: #1A5F7A;
 }

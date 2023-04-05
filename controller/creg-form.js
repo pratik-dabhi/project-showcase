@@ -7,7 +7,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 
 
-exports.candidate = async (req,res)=>{
+const candidate = async (req,res)=>{
     let q1 = `SELECT * FROM option_master where s_id='1'`;
     let [a1] =await con.query(q1);
     gender = (a1);
@@ -39,7 +39,7 @@ exports.candidate = async (req,res)=>{
     res.render("index",{gender:gender,state:state,course:course,lang:lang,tech:tech,loc:loc,rel:rel,data:data});
 }
 
-exports.city_api = async(req,res) => {
+const city_api = async(req,res) => {
     var val = req.query.id;
 
     let q1 = `select * from state_master where state_value='${val}'`;
@@ -50,7 +50,7 @@ exports.city_api = async(req,res) => {
     res.json({a1});
 }
 
-exports.candidate_data = async(req,res) => {
+const candidate_data = async(req,res) => {
     let search = req.query.search || '';
     let fname='',lname='',sname='',designation='',city='';
 
@@ -109,12 +109,11 @@ exports.candidate_data = async(req,res) => {
 
     let q1 = `select * from basic_details where candidate_firstname like'${fname}'or candidate_lastname like '${lname}' or candidate_surname like '${sname}' or candidate_designation like '${designation}' or candidate_city like '${city}' `;
     let [data] = await con.query(q1);
-    let data1 = data;
-    console.log(data1);
+    let data1 = req.data;
     res.render('list',{data:data,search:search,data1:data1});
 }
 
-exports.candidate_details = async (req, res) =>{
+const candidate_details = async (req, res) =>{
    //------------------Basic Details-------------
 
    var f_name = req.body.firstname;
@@ -317,22 +316,23 @@ exports.candidate_details = async (req, res) =>{
 
             let sq3 = `select candidate_id,candidate_firstname , candidate_lastname , candidate_surname , candidate_designation , candidate_city,isdelete from basic_details where isdelete='no'`;
             let data = await con.query(sq3);
-                res.render('list',{search:search,data:data});
+
+            let data1 = req.data;
+                res.redirect('/show')
 }
 
-exports.show = async (req,res) => {
+const show = async (req,res) => {
     let search;
     let q1 = `select candidate_id,candidate_firstname , candidate_lastname , candidate_surname , candidate_designation , candidate_city,isdelete from basic_details where isdelete='no'`;
     let [a1] = await con.query(q1);
-    data = a1;
 
     let data1 = req.data;
-    res.render('list',{data:data,search:search,data1:data1});
+    res.render('list',{data:a1,search:search,data1:data1});
 }
 
 
 
-exports.delete_api  = async (req,res) => {
+const delete_api  = async (req,res) => {
     let c_id = req.query.c_id;
     let q1 = `update basic_details set isDelete='Yes' where candidate_id=${c_id}`;
     let a1 =await con.query(q1);
@@ -343,8 +343,10 @@ exports.delete_api  = async (req,res) => {
     res.json({result : a2});
  }
 
- exports.delete_all_api = async(req,res)=>{
+ const delete_all_api = async(req,res)=>{
     let c_ids = req.body.arrid;
+
+    console.log('c_ids',c_ids);
          c_ids.forEach(e  =>{
             let q1 = `update basic_details set isDelete='Yes' where candidate_id=${e}`;
             let a1 = con.query(q1);
@@ -356,7 +358,7 @@ exports.delete_api  = async (req,res) => {
     
  }
     
-exports.edit_api = async(req,res)=>{
+const edit_api = async(req,res)=>{
 
     let sql1 = "SELECT * FROM option_master where s_id='1'";
     let [res1] = await con.query(sql1);
@@ -420,7 +422,7 @@ exports.edit_api = async(req,res)=>{
     
 }
 
-exports.update_api = async (req, res)=>{
+const update_api = async (req, res)=>{
     //     //------------------Basic Details-------------
    let fname = req.body.firstname;
    let lname = req.body.lastname;
@@ -496,7 +498,7 @@ exports.update_api = async (req, res)=>{
 
         // use to update old education details and also insert new education
         let e1 = `select education_id from education_details where candidate_id=${c_id}`;
-        let ae1 =await await con.query(e1);
+        let [ae1] =await  con.query(e1);
         let eid1=[];  // eid1 is array of education id
         if(typeof(ae1)=='string'){
             eid1 = (ae1[0]['education_id']);
@@ -527,7 +529,7 @@ exports.update_api = async (req, res)=>{
     //Experience -------------------------------
     
         let ex1 = `select experience_id from experience_details where candidate_id=${c_id}`;
-        let aex1 =await con.query(ex1);
+        let [aex1] =await con.query(ex1);
         let exid1=[];
         
         if(typeof(aex1)=='string'){
@@ -563,9 +565,9 @@ exports.update_api = async (req, res)=>{
     let q1 = `select language_id from language_details where candidate_id=${c_id} && language_name='hindi'`;
     let q2 = `select language_id from language_details where candidate_id=${c_id} && language_name='english'`;
     let q3 = `select language_id from language_details where candidate_id=${c_id} && language_name='gujarati'`;
-    let a1 = await con.query(q1);
-    let a2 = await con.query(q2);
-    let a3 = await con.query(q3);
+    let [a1] = await con.query(q1);
+    let [a2] = await con.query(q2);
+    let [a3] = await con.query(q3);
     let hid,eid,gid;
     if(a1 != ''){
          hid = (a1[0]['language_id']);
@@ -649,28 +651,28 @@ exports.update_api = async (req, res)=>{
         // Technology --------------------
 
         let query1 = `select technology_id from technology_details where candidate_id=${c_id} && technology_name='PHP'`;
-        let aq1 = await con.query(query1);
+        let [aq1] = await con.query(query1);
         let pid,nid,mid,lid,oid;
         if(aq1 != ''){
             pid = (aq1[0]['technology_id']);
        }
         let query2 = `select technology_id from technology_details where candidate_id=${c_id} && technology_name='NodeJs'`;
-        let aq2 = await con.query(query2);
+        let [aq2] = await con.query(query2);
         if(aq2 != ''){
             nid = (aq2[0]['technology_id']);
        }
         let query3 = `select technology_id from technology_details where candidate_id=${c_id} && technology_name='MySql'`;
-        let aq3 = await con.query(query3);
+        let [aq3] = await con.query(query3);
         if(aq3 != ''){
             mid = (aq3[0]['technology_id']);
        }
         let query4 = `select technology_id from technology_details where candidate_id=${c_id} && technology_name='Laravel'`;
-        let aq4 = await con.query(query4)
+        let [aq4] = await con.query(query4)
         if(aq4 != ''){
             lid = (aq4[0]['technology_id']);
        }
         let query5 = `select technology_id from technology_details where candidate_id=${c_id} && technology_name='Oracle'`;
-        let aq5 = await con.query(query5)
+        let [aq5] = await con.query(query5)
         if(aq5 != ''){
             oid = (aq5[0]['technology_id']);
        }
@@ -783,6 +785,8 @@ exports.update_api = async (req, res)=>{
      let s8 = `update preference_details set preference_location='${location}',preference_ctc=${expected_ctc},preference_cctc=${current_ctc} where candidate_id=${c_id}`;
      let a8 = await con.query(s8);
      
-     res.render('success.ejs');
+     res.redirect('/show');
 
 }
+
+module.exports = {candidate,city_api,candidate_data,candidate_details,show,delete_api,delete_all_api,edit_api,update_api}

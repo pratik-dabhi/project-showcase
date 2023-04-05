@@ -17,17 +17,17 @@ app.use(cookieParser())
 
 
 let auth = require('./routes/log-auth');
-app.use('/route',auth);
+app.use('/',auth);
 
 let form = require('./routes/register_form');
-app.use('/route',form);
+app.use('/',form);
 
 let gTable = require('./routes/greed');
-app.use('/route',gTable);
+app.use('/',gTable);
 
 let pagination = require('./routes/pagination');
-app.use('/route',pagination);
+app.use('/',pagination);
 
-app.listen(8080, function () {
-	console.log ("http://localhost:8080/route");
+app.listen(7878	, function () {
+	console.log ("http://localhost:7878/login-page");
 } );

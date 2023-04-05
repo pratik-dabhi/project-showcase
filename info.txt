@@ -2,3 +2,4 @@ Authentication using jwt.
 Store token in cookies.
 Verify username and password.
 Acoount activation link
+Show all project
