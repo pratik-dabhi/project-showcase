@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Exercise-1</title>
+  <style>
+    table {
+      margin-left: auto;
+      margin-right: auto;
+      width: 300px;
+      height: 300px;
+    }
+
+    td {
+      background: green;
+    }
+
+    .flex-row {
+      display: flex;
+    }
+
+    ul li {
+      list-style: none;
+      padding: 5px 15px;
+    }
+
+    .nav li a {
+      text-decoration: none;
+      color: white;
+    }
+
+    .align-flex {
+      display: flex;
+      align-items: center;
+      background-color: #2C3333;
+      color: white;
+      justify-content: space-between;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="align-flex">
+    <div>
+      <h1 class="align-center">Koo-koo Cube</h1>
+    </div>
+    <div class="align-flex">
+      <ul class="flex-row nav">
+        <li><a href="/home">Home</a></li>
+        <li><a href="/logout-api">Logout</a></li>
+        <li><a href="#">
+            <%= data.db_name%>
+          </a></li>
+      </ul>
+    </div>
+  </div>
+  <h2 id="timer" style="text-align: center; font-size: 25px">Timer :</h2>
+  <div class="container">
+    <table id="table" border="2px">
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td id="td1" onclick="fun()"></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+  <script>
+    let timerFlag = 0;
+
+    let pratik_counterFlag = 1;
+    const pratik_con = document.querySelector(".container"); //div container that hold table
+    let pratik_rows = 4;
+    let pratik_columns = 4;
+    const pratik_td1 = document.getElementById("td1"); // first selected td
+    pratik_td1.style.opacity = "0.6";
+    let pratik_tm = document.getElementById("timer");
+
+    var pratik_tds = document.querySelectorAll("td");
+    console.log(pratik_tds);
+
+    pratik_tds.forEach(e => {
+      e.addEventListener('click', () => {
+        timerFlag += 1;
+        console.log('clickedd');
+        start()
+      })
+    })
+    // console.log('timer flag: ' + timerFlag);
+
+
+    function fun() {
+      //--------Design dynamic table that increase on click event--------
+
+
+      pratik_con.querySelector("table").remove(); //remove table
+      const pratik_table = document.createElement("table"); // crate table
+      const pratik_tb = document.createElement("tbody"); //body
+
+      for (let i = 0; i < pratik_rows; i++) {  // Generate number of pratik_rows & pratik_columns
+        const pratik_row = document.createElement("tr"); // Generate row
+        for (let j = 0; j < pratik_columns; j++) {  //generate cell
+          const pratik_cell = document.createElement("td");
+          pratik_row.appendChild(pratik_cell); // add cell into row
+        }
+        pratik_tb.appendChild(pratik_row); // add row in table body
+      }
+
+      pratik_table.appendChild(pratik_tb); //add table body into table
+      pratik_con.appendChild(pratik_table);      //add table into div container name con
+      pratik_table.setAttribute("border", "2");
+
+      //-----For select random td--------
+
+      var pratik_tds = document.querySelectorAll("td");
+      for (let i = 0; i < pratik_rows * pratik_columns; i++) {
+        pratik_tds[i].setAttribute("id", "b" + i);
+      }
+
+
+
+      const x = Math.floor(Math.random() * (pratik_rows * pratik_columns));
+      let random = document.querySelector("#b" + x);
+      if (pratik_tm.innerHTML != "TimeOut") {
+
+        random.addEventListener("click", () => {
+          pratik_columns += 1;
+          pratik_rows += 1;
+          pratik_counterFlag++;
+          fun();
+        });
+      }
+
+
+      //----------For generate randrom hashcode for add background color----------
+      const pratik_arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f",];
+      let pratik_col = "#";
+      let value;
+      for (let x = 0; x < 6; x++) {
+        let pratik_index = Math.floor(Math.random() * 16);
+        let pratik_value = pratik_arr[pratik_index];
+        pratik_col += pratik_value;
+      }
+      for (let i = 0; i < pratik_rows * pratik_columns; i++) { // color all cell
+        pratik_tds[i].style.background = pratik_col;
+      }
+      random.style.opacity = "0.7"; // reduce the opacity of random cell
+
+    }
+
+
+    console.log('timerFlag', timerFlag);
+    function start() {
+      if (timerFlag == 1) {
+        startCountdown();
+      }
+    }
+
+    //-----------Counter function that display timer!!!------------
+    function startCountdown(seconds) {
+      // timerFlag = 1;
+      let pratik_tm = document.getElementById("timer");
+      let counter = (seconds = 15);
+      let random;
+
+      const interval = setInterval(() => {
+        pratik_tm.innerHTML = 'TIME : ' + counter;
+        counter--;
+
+        if (counter < 0) {
+          clearInterval(interval);
+          pratik_tm.innerHTML = "TimeOut";
+          alert("You have score :" + pratik_counterFlag);
+          // window.location.reload();
+        }
+      }, 1000);
+    }
+  </script>
+</body>
+
+</html>

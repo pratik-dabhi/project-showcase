@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link href="/reg-style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="bg-img padding-rl">
+        <form method="post" action="/register" onSubmit="return validate()">
+            <div>
+                <img src="logo.svg" alt="">
+            </div>
+            <div class="margin-bottom-30">
+                <label>Welcome Back</label>
+            </div>
+            <div>
+                <div>
+                    <label>Name</label>
+                </div>
+                <div>
+                    <input type="text" name="name" id="n_id" onkeyup="nameVal()">
+                    <p id="name-span" class="alert-red"></p>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label>Email</label>                
+                </div>
+                <div>
+                    <input type="text" name="email" onkeyup="checkEmail()" id="e_id">
+                    <p id="email-span" class="alert-red"></p>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label>Password</label>                
+                </div>
+                <div>
+                    <input type="password" id="pass-1" name="password" onkeyup="passVal1()">
+                    <p id="a-pass1" class="alert-red"></p>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <label>Confirm Password</label>
+                </div>
+                <div>
+                    <input type="password" id="pass-2" name="con-password" onblur="passVal2()">
+                    <p id="a-pass2" class="alert-red"></p>
+                </div>
+            </div>
+            <div>
+                <input type="submit" value="Sign up" id="signup-btn">
+            </div>
+        </form>
+        <div class="a-link">
+            <label>Already have an account?<a href="/login-page">Login Here</a></label>
+        </div>
+    </div>
+    </div>
+    <script>
+        function validate(){
+           if(pflag == 1 && nflag == 1 && cpflag == 1){
+            return true
+           }
+           else{
+            return false
+           }
+        }
+        let pflag = 0;
+        function passVal1(){
+
+            let upperCase = /[A-Z]/;
+            let lowerCase = /[a-z]/;
+            let number = /[0-9]/;
+            let pass1 = document.getElementById('pass-1').value;
+            let pass2 = document.getElementById('pass-2').value;
+            let alert1 = document.getElementById('a-pass1');
+
+
+            if(pass1 == ''){
+                console.log("psss");
+                // alert1.innerHTML=' ';
+                alert1.innerHTML='Empty password'
+                pflag = 0;
+            }
+            else if(!pass1.match(upperCase)){
+                alert1.innerHTML=' ';
+                alert1.innerHTML='At least one uppercase alphabet!!!'
+                pflag = 0;
+            }
+            else if(!pass1.match(lowerCase)){
+                alert1.innerHTML=' ';
+                alert1.innerHTML='At least one lowercase alphabet!!!'
+                pflag = 0;
+            }
+            else if(!pass1.match(number)){
+                alert1.innerHTML=' ';
+                alert1.innerHTML='At least one number!!!'
+                pflag = 0;
+            }
+            else if(pass1.length < 8){
+                alert1.innerHTML=' ';
+                alert1.innerHTML='At least 8 character  !!!'
+                pflag = 0;
+            }
+            
+            else{
+                alert1.innerHTML=' ';
+                pflag = 1;
+            }
+        }
+        let cpflag = 0;
+        function passVal2(){
+            let pass1 = document.getElementById('pass-1').value;
+            let pass2 = document.getElementById('pass-2').value;
+            let alert2 = document.getElementById('a-pass2');
+
+            if(pass2 == ''){
+                alert2.innerHTML=' ';
+                alert2.innerHTML='Empty password'
+                cpflag = 0;
+            }
+
+            else if(pass1 != pass2){
+                alert2.innerHTML=' ';
+                alert2.innerHTML='Password is not matched..'
+                cpflag = 0;
+            }
+            
+            else{
+                alert2.innerHTML=' ';
+                cpflag = 1;
+            }
+        }
+        let nflag = 0;
+        function nameVal(){
+            let name = document.getElementById('n_id').value;
+            let name_span = document.getElementById('name-span');
+            if(name == ''){
+                name_span.innerHTML=' ';
+                name_span.innerHTML='Please enter name !!!'
+                nflag=0;
+            }
+            else{
+                name_span.innerHTML=' ';
+                nflag=1;
+            }
+        }
+        async function checkEmail(){
+            let email = document.getElementById('e_id').value;
+            let email_span =document.getElementById('email-span');
+            let sign = document.getElementById('signup-btn');
+
+             const result = await fetch(`/email-api?email=${email}`);
+             const data  = await result.json();
+    
+            if(data.a1.length != 0){
+                data.a1.forEach(element => {
+                if(element.auth_email == email){
+                    email_span.innerHTML='Email is already used!!!';
+                    sign.disabled='disabled';
+                }
+              });
+            }
+            else{
+                email_span.innerHTML=' ';
+                sign.disabled=false;
+            }
+            
+        }
+    </script> 
+</body>
+</html>
