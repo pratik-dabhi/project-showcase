@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tic-tac</title>
     <style>
-        .site-container{
+        .site-container {
             padding: 0 16px;
             margin: 0 auto;
         }
-        h1{
+
+        h1 {
             background-color: #2C3333;
             color: white;
             margin: 0;
             padding: 15px;
         }
-        .color-2{
+
+        .color-2 {
             padding: 5px;
             background-color: #0E8388;
             color: white;
         }
-        .align-center{
+
+        .align-center {
             text-align: center;
         }
-        .just-center{
+
+        .just-center {
             justify-content: space-around;
         }
-        .flex-row{
+
+        .flex-row {
             display: flex;
         }
-        td{
+
+        td {
             font-family: 'Times New Roman', Times, serif;
             margin: 0px;
             padding: 0px;
@@ -38,64 +45,76 @@
             width: 40px;
             font-size: 70px;
         }
-        #p1,#p2{
+
+        #p1,
+        #p2 {
             font-size: large;
             font-family: 'Times New Roman', Times, serif;
             text-align: center;
             margin: 0;
         }
-        .margin-bottom-50{
+
+        .margin-bottom-50 {
             margin-bottom: 50px;
         }
-        #table{
-            background:#cccc99;
+
+        #table {
+            background: #cccc99;
             color: #003300;
         }
-        #reset{
+
+        #reset {
             font-size: larger;
             font-family: 'Times New Roman', Times, serif;
             margin-top: 20px;
         }
-        .container{
+
+        .container {
             display: flex;
             justify-content: center;
         }
-        input{
-            color:#cccc99;
+
+        input {
+            color: #cccc99;
             background: #003300;
             padding: 5px 15px;
             border-radius: 25px;
         }
-        ul li{
+
+        ul li {
             list-style: none;
-            padding:5px 15px;
+            padding: 5px 15px;
         }
-        .nav li a{
+
+        .nav li a {
             text-decoration: none;
             color: white;
         }
-        .align-flex{
+
+        .align-flex {
             display: flex;
             align-items: center;
             background-color: #2C3333;
             color: white;
             justify-content: space-between;
         }
-
     </style>
 </head>
+
 <body>
-    
+
     <div class="site-container">
         <div class="align-flex">
             <div>
                 <h1 class="align-center">Tic Tac Toe</h1>
-            </div>            
+            </div>
             <div class="align-flex">
                 <ul class="flex-row nav">
                     <li><a href="/home">Home</a></li>
                     <li><a href="/logout-api">Logout</a></li>
-                    <li><a href="#"><%= data.db_name%></a></li>
+                    <li><a href="#">
+                            <%= data.db_name%>
+                        </a></li>
                 </ul>
             </div>
         </div>
@@ -104,13 +123,13 @@
                 <h2 id="winnerTxt">Start</h2>
             </div>
             <div class="">
-                <p id="p1">Player o wins matches :</p><br/>
+                <p id="p1">Player o wins matches :</p><br />
                 <p id="p2">Player x wins matches :</p>
-            </div>    
+            </div>
         </div>
-            <div class="container">
+        <div class="container">
             <table id="table" border="1px" style="height: 350px;width: 350px; text-align: center;">
-                
+
                 <tr>
                     <td id="td1" onclick="sFun(this)"></td>
                     <td id="td2" onclick="sFun(this)"></td>
@@ -129,100 +148,126 @@
             </table>
         </div>
         <div class="container">
-            <input type="reset" onclick="reset()" value="RESET" id="reset" disabled> 
+            <input type="reset" onclick="reset()" value="RESET" id="reset" disabled>
         </div>
-        
+
     </div>
-<script>
-    pdFlag = 0;
-    pdCheck = 0;
-    function sFun(pd){
-    if(pdFlag == 0 && pd.innerHTML == "" && pdCheck == 0){
-        var win = document.getElementById("winnerTxt").innerHTML="Player 0's turn...";    
-        pd.innerHTML="x";
-        pdFlag=1;
-    }
-    else if(pd.innerHTML=="" && pdCheck == 0){
-        var win = document.getElementById("winnerTxt").innerHTML="Player x's turn... ";    
-        pd.innerHTML="o";
-        pdFlag=0;
-    }
-    val();
-    }
-   let pdCont1 = 0;
-   let pdCont2 = 0;
-    function val(){
-        var pd1 = document.getElementById("td1").innerHTML;
-        var pd2 = document.getElementById("td2").innerHTML;
-        var pd3 = document.getElementById("td3").innerHTML;
-        var pd4 = document.getElementById("td4").innerHTML;
-        var pd5 = document.getElementById("td5").innerHTML;
-        var pd6 = document.getElementById("td6").innerHTML;
-        var pd7 = document.getElementById("td7").innerHTML;
-        var pd8 = document.getElementById("td8").innerHTML;
-        var pd9 = document.getElementById("td9").innerHTML;
+    <script>
 
-        if(pd1 != '' || pd2 != ''|| pd3 != '' || pd4 != '' || pd5 != '' || pd6 != '' || pd7 != '' || pd8 != '' || pd9 != ''){
-            let button = document.getElementById("reset");
-            console.log('trueee');
-            button.disabled = false;
-        }else{
-            console.log('falsse');
-            button.disabled = true;
-        }
-
-        var pd123 = pd1+pd2+pd3;
-        var pd456 = pd4+pd5+pd6;
-        var pd789 = pd7+pd8+pd9;
-        var pd147 = pd1+pd4+pd7;
-        var pd258 = pd2+pd5+pd8;
-        var pd369 = pd3+pd6+pd9;
-        var pd159 = pd1+pd5+pd9;
-        var pd357 = pd3+pd5+pd7;
-    
-        if(!pdCheck){
-        if(pd123=="ooo" || pd456=="ooo"|| pd789=="ooo"|| pd147=="ooo"|| pd258=="ooo"|| pd369=="ooo"|| pd159=="ooo"|| pd357=="ooo") {
-        //Use for player 0 is winning..!!!
-        var win = document.getElementById("winnerTxt").innerHTML="Player 0 is won";
-        pdCont1++; // use to how many time player 0 is wins..!!
-        //alert("Player 0 win :"+pdCont1);
-        document.getElementById("p1").innerHTML="Player o wins matches :"+pdCont1;
-        pdCheck = 1;
-        //reset();
-        }
-
-        else if(pd123=="xxx"|| pd456=="xxx"|| pd789=="xxx"|| pd147=="xxx"|| pd258=="xxx"|| pd369=="xxx"|| pd159=="xxx"|| pd357=="xxx") {
-        //Use for player x is winning..!!!
-        var win = document.getElementById("winnerTxt").innerHTML="Player x is won";
-        pdCont2++;
-        //alert("Player x win :"+pdCont2);
-        document.getElementById("p2").innerHTML="Player x wins matches :"+pdCont2;
-        pdCheck = 1;
-        //reset();
-        }
-        else if(pd123.length==3 && pd456.length==3 && pd789.length==3 && pd147.length==3 && pd258.length==3 && pd369.length==3 && pd159.length==3 && pd357.length==3){
-            var win = document.getElementById("winnerTxt").innerHTML="Game is draw!!!";
-            // reset();
-            // use for none is won or draw  the match
-        }}
-    }
-    function reset(){  // use to reset th game 
-        if(confirm("Restart the game again?")){
-            var win = document.getElementById("winnerTxt").innerHTML="Start";    
-            var pd1 = document.getElementById("td1").innerHTML="";
-            var pd2 = document.getElementById("td2").innerHTML="";
-            var pd3 = document.getElementById("td3").innerHTML="";
-            var pd4 = document.getElementById("td4").innerHTML="";
-            var pd5 = document.getElementById("td5").innerHTML="";
-            var pd6 = document.getElementById("td6").innerHTML="";
-            var pd7 = document.getElementById("td7").innerHTML="";
-            var pd8 = document.getElementById("td8").innerHTML="";
-            var pd9 = document.getElementById("td9").innerHTML="";
-            let button = document.getElementById("reset");
-            button.disabled = true;
-            pdCheck=0;
+        if(localStorage.getItem('Player1') == null){
+            localStorage.setItem('Player1',0);
         } 
-    }
+        if(localStorage.getItem('Player2') == null){
+            localStorage.setItem('Player2',0)
+        }
+        
+
+        var Player1 = localStorage.getItem('Player1');  
+        document.getElementById("p1").innerHTML = "Player o wins matches :" + Player1;
+        
+        
+        var Player2 = localStorage.getItem('Player2');
+        document.getElementById("p2").innerHTML = "Player x wins matches :" + Player2;
+
+        let pdFlag = 0;
+        pdCheck = 0;
+        function sFun(pd) {
+            if (pdFlag == 0 && pd.innerHTML == "" && pdCheck == 0) {
+                var win = document.getElementById("winnerTxt").innerHTML = "Player 0's turn...";
+                pd.innerHTML = "x";
+                pdFlag = 1;
+            }
+            else if (pd.innerHTML == "" && pdCheck == 0) {
+                var win = document.getElementById("winnerTxt").innerHTML = "Player x's turn... ";
+                pd.innerHTML = "o";
+                pdFlag = 0;
+            }
+            val();
+        }
+        let pdCont1 = 0;
+        let pdCont2 = 0;
+        function val() {
+            var pd1 = document.getElementById("td1").innerHTML;
+            var pd2 = document.getElementById("td2").innerHTML;
+            var pd3 = document.getElementById("td3").innerHTML;
+            var pd4 = document.getElementById("td4").innerHTML;
+            var pd5 = document.getElementById("td5").innerHTML;
+            var pd6 = document.getElementById("td6").innerHTML;
+            var pd7 = document.getElementById("td7").innerHTML;
+            var pd8 = document.getElementById("td8").innerHTML;
+            var pd9 = document.getElementById("td9").innerHTML;
+
+            if (pd1 != '' || pd2 != '' || pd3 != '' || pd4 != '' || pd5 != '' || pd6 != '' || pd7 != '' || pd8 != '' || pd9 != '') {
+                let button = document.getElementById("reset");
+                button.disabled = false;
+            } else {
+                button.disabled = true;
+            }
+
+            var pd123 = pd1 + pd2 + pd3;
+            var pd456 = pd4 + pd5 + pd6;
+            var pd789 = pd7 + pd8 + pd9;
+            var pd147 = pd1 + pd4 + pd7;
+            var pd258 = pd2 + pd5 + pd8;
+            var pd369 = pd3 + pd6 + pd9;
+            var pd159 = pd1 + pd5 + pd9;
+            var pd357 = pd3 + pd5 + pd7;
+            console.log('!pdCheck', !pdCheck);
+            if (!pdCheck) {
+                if (pd123 == "ooo" || pd456 == "ooo" || pd789 == "ooo" || pd147 == "ooo" || pd258 == "ooo" || pd369 == "ooo" || pd159 == "ooo" || pd357 == "ooo") {
+                    var win = document.getElementById("winnerTxt").innerHTML = "Player 0 is won";
+                    pdCont1++; // use to how many time player 0 is wins..!!
+
+                    var Player1 = localStorage.getItem('Player1');
+                    console.log('Player ----01',Player1);
+        
+                    localStorage.setItem('Player1', parseInt(Player1) + parseInt(1));
+                    document.getElementById("p1").innerHTML = "Player o wins matches :" +(parseInt(Player1) + parseInt(1));
+                    localFlag = 1;
+                    pdCheck = 1;
+                    //reset();
+                }
+
+                else if (pd123 == "xxx" || pd456 == "xxx" || pd789 == "xxx" || pd147 == "xxx" || pd258 == "xxx" || pd369 == "xxx" || pd159 == "xxx" || pd357 == "xxx") {
+                    //Use for player x is winning..!!!
+                    var win = document.getElementById("winnerTxt").innerHTML = "Player x is won";
+                    pdCont2++;
+
+                    // Player2 = 0;
+                    var Player2 = localStorage.getItem('Player2');
+                    console.log('Player ----02',Player2);
+                    localStorage.setItem('Player2', parseInt(Player2)+parseInt(1));
+                    document.getElementById("p2").innerHTML = "Player x wins matches :" + (parseInt(Player2)+parseInt(1));
+
+                    pdCheck = 1;
+                    localFlag = 1;
+                    //reset();
+                }
+                else if (pd123.length == 3 && pd456.length == 3 && pd789.length == 3 && pd147.length == 3 && pd258.length == 3 && pd369.length == 3 && pd159.length == 3 && pd357.length == 3) {
+                    var win = document.getElementById("winnerTxt").innerHTML = "Game is draw!!!";
+                    // reset();
+                    // use for none is won or draw  the match
+                }
+            }
+        }
+        function reset() {  // use to reset th game 
+            if (confirm("Restart the game again?")) {
+                var win = document.getElementById("winnerTxt").innerHTML = "Start";
+                var pd1 = document.getElementById("td1").innerHTML = "";
+                var pd2 = document.getElementById("td2").innerHTML = "";
+                var pd3 = document.getElementById("td3").innerHTML = "";
+                var pd4 = document.getElementById("td4").innerHTML = "";
+                var pd5 = document.getElementById("td5").innerHTML = "";
+                var pd6 = document.getElementById("td6").innerHTML = "";
+                var pd7 = document.getElementById("td7").innerHTML = "";
+                var pd8 = document.getElementById("td8").innerHTML = "";
+                var pd9 = document.getElementById("td9").innerHTML = "";
+                let button = document.getElementById("reset");
+                button.disabled = true;
+                pdCheck = 0;
+            }
+        }
     </script>
 </body>
+
 </html>

@@ -70,11 +70,11 @@ const data_api = async (req, res) => {
         let [a1] = await con.query(q1);
         console.log('update');
     }
-    // res.redirect(`/data`);
     res.json({msg:'save successfully'});
 };
 
 const update_api_all = async(req,res)=>{
+    
     let candidate_id = req.body.candidate_id;
     let firstname = req.body.firstname;
     let lastname = req.body.lastname;
@@ -83,26 +83,62 @@ const update_api_all = async(req,res)=>{
     let email = req. body.email;
     let city = req.body.city;
 
+    
+
     if((typeof(candidate_id) =='undefined') == false){
-    for(let i=0 ; i < candidate_id.length ; i++) {   
-        let q1 = `update update_date set firstname='${firstname[i]}',lastname='${lastname[i]}',surname='${surname[i]}',email='${email[i]}',contact='${contact[i]}',city='${city[i]}',isDelete='0' where table_id=${candidate_id[i]}`;   
-        let [a1] = await con.query(q1);
-        console.log('Update all !!!');    
-    }
-    for(var i = candidate_id.length ; i < firstname.length ; i++ ){
-        let q1 = `insert into update_date (firstname,lastname,surname,email,contact,city,isDelete) values ('${firstname[i]}','${lastname[i]}','${surname[i]}','${contact[i]}','${email[i]}','${city[i]}','0')`;    
-        let [a1] = await con.query(q1);
-        console.log('Insert all !!!');
+        if(typeof(candidate_id) == 'string' && typeof(firstname) == 'string'){
+            let q1 = `update update_date set firstname='${firstname}',lastname='${lastname}',surname='${surname}',email='${email}',contact='${contact}',city='${city}',isDelete='0' where table_id=${candidate_id}`;   
+            let [a1] = await con.query(q1);
+            console.log('Update - 1 ',q1);
+        }
+        else if(candidate_id){
+            if(typeof(candidate_id) == 'string' && typeof(firstname) != 'string'){
+                let q1 = `update update_date set firstname='${firstname[0]}',lastname='${lastname[0]}',surname='${surname[0]}',email='${email[0]}',contact='${contact[0]}',city='${city[0]}',isDelete='0' where table_id=${candidate_id}`;   
+                let [a1] = await con.query(q1);
+                console.log('Update 2',q1);
+                
+    
+                for(var i = 1 ; i < firstname.length ; i++ ){
+                    let q1 = `insert into update_date (firstname,lastname,surname,email,contact,city,isDelete) values ('${firstname[i]}','${lastname[i]}','${surname[i]}','${contact[i]}','${email[i]}','${city[i]}','0')`;    
+                    let [a1] = await con.query(q1);
+                    console.log('Update - 3',q1)
+                }
+            }
+            else if (typeof(candidate_id) != 'string' && typeof(firstname) != 'string'){
+            console.log("Both are not string");
+            for(let i = 0; i < candidate_id.length; i++) {
+
+                let q1 = `update update_date set firstname='${firstname[i]}',lastname='${lastname[i]}',surname='${surname[i]}',email='${email[i]}',contact='${contact[i]}',city='${city[i]}',isDelete='0' where table_id=${candidate_id[i]}`;   
+                let [a1] = await con.query(q1);
+                console.log('Update - 4 ',q1);
+            }
+
+            console.log(firstname.length > candidate_id.length);
+            if(firstname.length > candidate_id.length){
+            for(var i = candidate_id ; i < firstname.length ; i++ ){
+                let q1 = `insert into update_date (firstname,lastname,surname,email,contact,city,isDelete) values ('${firstname[i]}','${lastname[i]}','${surname[i]}','${contact[i]}','${email[i]}','${city[i]}','0')`;    
+                let [a1] = await con.query(q1);
+                console.log('update - 5',q1);
+                
+                }
+            }
+        }
     }
     }
 
     if((typeof(candidate_id) =='undefined') == true){
+        if(typeof(firstname) == 'string'){
+            let q1 = `insert into update_date (firstname,lastname,surname,email,contact,city,isDelete) values ('${firstname}','${lastname}','${surname}','${contact}','${email}','${city}','0')`;    
+            let [a1] = await con.query(q1);
+            console.log('Insert all 1 !!!');
+    }else{
         for(var i = 0 ; i < firstname.length ; i++ ){
             let q1 = `insert into update_date (firstname,lastname,surname,email,contact,city,isDelete) values ('${firstname[i]}','${lastname[i]}','${surname[i]}','${contact[i]}','${email[i]}','${city[i]}','0')`;    
             let [a1] = await con.query(q1);
-            console.log('Insert all !!!');
+            console.log('Insert all 2!!!');
         }
     }
+}
     res.redirect('/data')
 };
 
@@ -111,7 +147,6 @@ const data = async(req,res)=>{
     let data = req.data;
     let sql = `select * from update_date where isDelete = 0`;  //update_date is datatable that store record
     let [a1] = await con.query(sql);
-    console.log('a1',a1);
     res.render('greed',{a1:a1,data:data})
 };
 
@@ -119,7 +154,6 @@ const data = async(req,res)=>{
 
 const fetchData = async(req,res)=>{
     let id = req.query.id;
-    console.log('iddd',id);
     let sql = `select * from update_date where table_id=${id}`;  //update_date is datatable that store record
     let [a1] = await con.query(sql);
     res.json({a1:a1})

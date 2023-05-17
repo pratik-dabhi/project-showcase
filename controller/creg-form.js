@@ -106,11 +106,16 @@ const candidate_data = async(req,res) => {
             }
         }
     }
-
-    let q1 = `select * from basic_details where candidate_firstname like'${fname}'or candidate_lastname like '${lname}' or candidate_surname like '${sname}' or candidate_designation like '${designation}' or candidate_city like '${city}' `;
-    let [data] = await con.query(q1);
-    let data1 = req.data;
-    res.render('list',{data:data,search:search,data1:data1});
+    if (search.length != 0) {
+        let q1 = `select * from basic_details where isdelete = 'no'and candidate_firstname like'%${fname}%'and candidate_lastname like '%${lname}%' and candidate_surname like '%${sname}%' and candidate_designation like '%${designation}%' and candidate_city like '%${city}%'`;
+        
+        let [data] = await con.query(q1);        
+        let data1 = req.data;
+        res.render('list',{data:data,search:search,data1:data1});
+    }else{
+        res.redirect('/show');
+    }
+    
 }
 
 const candidate_details = async (req, res) =>{
@@ -131,11 +136,16 @@ const candidate_details = async (req, res) =>{
    var date = req.body.date; 
    var gender = req.body.gender;
 
+   
+
 //----------------   Academic Details -----------------
    var course = req.body.course;
    var board_university = req.body.board_university;
    var per = (req.body.per);
    var passing_year = (req.body.passing_year);
+
+
+   console.log('Education Details ' ,course,board_university,per,passing_year);
    
    var companyname = req.body.companyname;
    var designation = req.body.designation;
@@ -157,7 +167,6 @@ const candidate_details = async (req, res) =>{
    var speak_hindi = req.body.speak_hindi;
    var speak_gujarati = req.body.speak_gujarati;
 
-   console.log('161--'+language,read_english,read_gujarati,read_hindi);
 
     //--------------------------------Technology Details---------------
 
@@ -187,74 +196,64 @@ const candidate_details = async (req, res) =>{
 
     let q1 = `insert into basic_details (candidate_firstname , candidate_lastname , candidate_surname, candidate_designation , candidate_email , candidate_address1 , candidate_address2 , candidate_state , candidate_contact , candidate_city , candidate_zipcode , candidate_gender , candidate_rstatus ,  candidate_dob, isdelete) values ('${f_name}','${l_name}','${s_name}','${des}','${email}','${address1}','${address2}','${state}','${contact}','${city}','${zipcode}','${gender}','${rstatus}','${date}','no')`;
     let [a1] =await con.query(q1);
-    console.log('Basic Details is inserted!!!');
+    // console.log('Basic Details is inserted!!!');
     let inserId  = a1.insertId;
 
     if(typeof(course)=='string'){
             let q1 = `insert into education_details (candidate_id,education_course,education_board_university,education_percentage,education_passing_year) values ('${inserId}','${course}','${board_university}','${per}','${passing_year}')`;
             let a1 = await con.query(q1);
-            console.log('Education Details inserted !!! ');
+            // console.log('Education Details inserted !!! ');
     
         }
         else{
              for(var i=0 ; i < course.length ; i++){
                 let q1 = `insert into education_details (candidate_id,education_course,education_board_university,education_percentage,education_passing_year) values ('${inserId}','${course[i]}','${board_university[i]}','${per[i]}','${passing_year[i]}')`;
                 let a1 = await con.query(q1);
-                console.log('Education Details inserted !!! ');
+                // console.log('Education Details inserted !!! ');
             }
         }
         
         if(typeof(companyname)=='string'){
             let q1 = `insert into experience_details (candidate_id,experience_company,experience_designation,experience_ctc,experience_sdate,experience_ldate) values ('${inserId}','${companyname}','${designation}','${ctc}','${startdate}','${enddate}')`;
             let a1 = await con.query(q1);
-            console.log('Experience details inserted !!!');
+            // console.log('Experience details inserted !!!');
         }
         else{
             for(var i=0; i < companyname.length ; i++ ) {
                 let q1 = `insert into experience_details (candidate_id,experience_company,experience_designation,experience_ctc,experience_sdate,experience_ldate) values ('${inserId}','${companyname[i]}','${designation[i]}','${ctc[i]}','${startdate[i]}','${enddate[i]}')`;
                 let a1 = await con.query(q1);
-                console.log('Experience details inserted !!!');
+                // console.log('Experience details inserted !!!');
              }
         }
    
     if(typeof(language)=='string'){
-        if( `${language}` == 'english'){
-            let q1 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','${language}','${read_english ? 'YES':'NO'}','${write_english ? 'YES':'NO'}','${speak_english ? 'YES':'NO'}') `;
+            let q1 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','english','${read_english ? 'YES':'NO'}','${write_english ? 'YES':'NO'}','${speak_english ? 'YES':'NO'}') `;
             let a1 = await con.query(q1);
-            console.log("English Inserted !!!");
-           }
-        if(`${language}` == 'hindi'){
-            let q2 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','${language}','${read_hindi ? 'YES':'NO'}','${write_hindi ? 'YES':'NO'}','${speak_hindi ? 'YES':'NO'}') `;
+            // console.log("English Inserted !!!");
+        
+            let q2 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','hindi','${read_hindi ? 'YES':'NO'}','${write_hindi ? 'YES':'NO'}','${speak_hindi ? 'YES':'NO'}') `;
             let a2 = await con.query(q2);
-            console.log("Hindi is inserted !!!");
-           }
-        if(`${language}` == 'gujarati'){
-            let q3 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','${language}','${read_gujarati ? 'YES':'NO'}','${write_gujarati ? 'YES':'NO'}','${speak_gujarati ? 'YES':'NO'}') `;
+            // console.log("Hindi is inserted !!!");
+
+            let q3 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','gujarati','${read_gujarati ? 'YES':'NO'}','${write_gujarati ? 'YES':'NO'}','${speak_gujarati ? 'YES':'NO'}') `;
             let a3 = await con.query(q3);
-            console.log("Gujarati is inserted !!!");
-           }
+            // console.log("Gujarati is inserted !!!");
     }
     else{
-        for(var i=0 ; i< language.length;i++){
-            if(`${language[i]}` == 'hindi'){
-            let q1 = `insert language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','${language[i]}','${read_hindi ? 'YES':'NO'}','${write_hindi ? 'YES':'NO'}','${speak_hindi ? 'YES':'NO'}')`;
+        
+            let q1 = `insert language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','hindi','${read_hindi ? 'YES':'NO'}','${write_hindi ? 'YES':'NO'}','${speak_hindi ? 'YES':'NO'}')`;
             let a1 = await con.query(q1);
-            console.log("Hindi is inserted !!!");
-           }
-        if( `${language[i]}` == 'english'){
-            let q2= `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','${language[i]}','${read_english ? 'YES':'NO'}','${write_english ? 'YES':'NO'}','${speak_english ? 'YES':'NO'}') `;
+            // console.log("Hindi is inserted !!!");
+        
+            let q2= `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','english','${read_english ? 'YES':'NO'}','${write_english ? 'YES':'NO'}','${speak_english ? 'YES':'NO'}') `;
             let a2 = await con.query(q2);
-            console.log("English Inserted !!!");
-        }
-
-        if(`${language[i]}` == 'gujarati'){
-            let q3 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','${language[i]}','${read_gujarati ? 'YES':'NO'}','${write_gujarati ? 'YES':'NO'}','${speak_gujarati ? 'YES':'NO'}') `;
+            // console.log("English Inserted !!!");
+        
+            let q3 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values ('${inserId}','gujarati','${read_gujarati ? 'YES':'NO'}','${write_gujarati ? 'YES':'NO'}','${speak_gujarati ? 'YES':'NO'}') `;
             let a3 = await con.query(q3);
-            console.log("Gujarati is inserted !!!");
+            // console.log("Gujarati is inserted !!!");
             
-           }
          }
-    }
 
              if(typeof(tech)=='string'){
                 if(tech=='PHP'){
@@ -277,7 +276,7 @@ const candidate_details = async (req, res) =>{
                     let q5 = `insert into technology_details (candidate_id,technology_name,technology_level) values ('${inserId}','${tech}','${oracle}')`;
                     let a5 = await con.query(q5);
                 }
-                console.log('Technology inserted !!!');
+                // console.log('Technology inserted !!!');
              }
              else{
                 for(var i=0 ; i<tech.length ; i++){
@@ -301,18 +300,18 @@ const candidate_details = async (req, res) =>{
                     let q5 = `insert into technology_details (candidate_id,technology_name,technology_level) values ('${inserId}','${tech[i]}','${oracle}')`;
                     let a5 = await con.query(q5);
                 }
-                console.log("Technology inserted !!!");
+                // console.log("Technology inserted !!!");
             }
          }
  
             let sq1= `insert into reference_details (candidate_id,reference_name,reference_contact,reference_relation) values ('${inserId}','${rname1}','${cnumber1}','${relation1}'),('${inserId}','${rname2}','${cnumber2}','${relation2}')`;
             let aq1 = await con.query(sq1);
-            console.log("Reference inserted !!!!");
+            // console.log("Reference inserted !!!!");
             
             
             let sq2 = `insert into preference_details (candidate_id,preference_location,preference_ctc,preference_cctc) values ('${inserId}','${location}','${expected_ctc}','${current_ctc}')`;
             let aq2 =await con.query(sq2);
-               console.log("Preference inserted !!!");
+            //    console.log("Preference inserted !!!");
 
             let sq3 = `select candidate_id,candidate_firstname , candidate_lastname , candidate_surname , candidate_designation , candidate_city,isdelete from basic_details where isdelete='no'`;
             let data = await con.query(sq3);
@@ -494,7 +493,7 @@ const update_api = async (req, res)=>{
     // use to update basic details
      let s1 = `update basic_details set candidate_firstname='${fname}' , candidate_lastname='${lname}' , candidate_surname='${sname}', candidate_designation='${desc}' , candidate_email='${email}' , candidate_address1 ='${address1}', candidate_address2='${address2}' , candidate_state='${state}' , candidate_contact=${contact} , candidate_city='${city}' , candidate_zipcode=${zipcode} , candidate_gender='${gender}' , candidate_rstatus='${rstatus}',  candidate_dob='${dob}' where candidate_id=${c_id}`;
      let SQ1 = await con.query(s1);
-     console.log("Basic details updated!!!");
+    //  console.log("Basic details updated!!!");
 
         // use to update old education details and also insert new education
         let e1 = `select education_id from education_details where candidate_id=${c_id}`;
@@ -512,17 +511,18 @@ const update_api = async (req, res)=>{
         if(typeof(course)=='string'){
             let s2 = `update education_details set education_course='${course}',education_board_university='${ebu}', education_percentage=${per},education_passing_year='${pass}' where candidate_id=${c_id}`;
             let a2 = await con.query(s2);
-            console.log('Education Details inserted !!! ');
+            // console.log('Education Details inserted !!! ');
         }
         else{
             for(var i=0 ; i < eid1.length ; i++){
                 let s2 = `update education_details set education_course='${course[i]}',education_board_university='${ebu[i]}', education_percentage=${per[i]},education_passing_year='${pass[i]}' where candidate_id=${c_id} && education_id=${eid1[i]}`;
                 let a2 = await con.query(s2);
-                console.log('Education Details inserted !!! ');}
+                // console.log('Education Details inserted !!! ');
+            }
             for(var i = eid1.length;i<course.length;i++){
                 let q1 = `insert into education_details (candidate_id,education_course,education_board_university,education_percentage,education_passing_year) values (${c_id},'${course[i]}','${ebu[i]}','${per[i]}','${pass[i]}')`;
                 let a1 = await con.query(q1);
-                console.log('New data inserted');
+                // console.log('New data inserted');
             }  
         }
 
@@ -544,20 +544,20 @@ const update_api = async (req, res)=>{
     if(typeof(companyname)=='string'){
         let s1 = `update experience_details set experience_company='${companyname}',experience_designation='${designation}',experience_ctc=${ctc},experience_sdate='${startdate}',experience_ldate='${enddate}' where candidate_id = ${c_id}`;
         let a1 = await con.query(s1);
-        console.log('Single experience inserted!!!');
+        // console.log('Single experience inserted!!!');
     }
     else{
         for(var i=0 ; i < exid1.length ; i++){  // exid1 is array of experience id
             let s2 = `update experience_details set experience_company='${companyname[i]}',experience_designation='${designation[i]}',experience_ctc=${ctc[i]},experience_sdate='${startdate[i]}',experience_ldate='${enddate[i]}' where candidate_id = ${c_id} && experience_id=${exid1[i]}`;
-            console.log(s2);
+            // console.log(s2);
             let a2 = await queryExecuter(s2);
-            console.log('Experience Details inserted !!! ');
+            // console.log('Experience Details inserted !!! ');
         }
         for(var i = exid1.length;i<companyname.length;i++){
             let q1 = `insert into experience_details (candidate_id,experience_company,experience_designation,experience_ctc,experience_sdate,experience_ldate) values (${c_id},'${companyname[i]}','${designation[i]}','${ctc[i]}','${startdate[i]}','${enddate[i]}')`;
-            console.log(q1);
+            // console.log(q1);
             let a1 = await con.query(q1);
-            console.log('New data inserted');
+            // console.log('New data inserted');
         }  
     }
 
@@ -580,73 +580,33 @@ const update_api = async (req, res)=>{
     }
 
     if(typeof(language) == 'string'){
-        if( `${language}` == 'english' && eid!=undefined){
-            let s3 =`update language_details  set language_name='${language}',language_read='${read_english ? 'YES':'NO'}',language_write='${write_english ? 'YES':'NO'}',language_speak='${speak_english ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${eid}`;
+        
+            let s3 =`update language_details  set language_name='english',language_read='${read_english ? 'YES':'NO'}',language_write='${write_english ? 'YES':'NO'}',language_speak='${speak_english ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${eid}`;
             let a3 = await con.query(s3);
-            console.log("English Inserted !!!");
-            }
-        if( `${language}` == 'english' && eid== undefined){
-            let s3 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values(${c_id},'${language}','${read_english ? 'YES':'NO'}','${write_english ? 'YES':'NO'}','${speak_english ? 'YES':'NO'}')`;
-            let a3 = await con.query(s3);
-        }
-        if(`${language}` == 'hindi' && eid != undefined){
-            let s4 =`update language_details  set language_name='${language}',language_read='${read_hindi ? 'YES':'NO'}',language_write='${write_hindi ? 'YES':'NO'}',language_speak='${speak_hindi ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${hid}`;
+            // console.log("English Inserted !!!");
+           
+            let s4 =`update language_details  set language_name='hindi',language_read='${read_hindi ? 'YES':'NO'}',language_write='${write_hindi ? 'YES':'NO'}',language_speak='${speak_hindi ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${hid}`;
             let a4= await con.query(s4);
-            console.log("Hindi is inserted !!!");
-            }
-        if(`${language}` == 'hindi' && eid == undefined){
-            let s4 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values(${c_id},'${language}','${read_hindi ? 'YES':'NO'}','${write_hindi ? 'YES':'NO'}','${speak_hindi ? 'YES':'NO'}')`;
-            let a4= await con.query(s4);
-        }
-        if(`${language}` == 'gujarati' && gid != undefined){
-            let s5 =`update language_details  set language_name='${language}',language_read='${read_gujarati ? 'YES':'NO'}',language_write='${write_gujarati ? 'YES':'NO'}',language_speak='${speak_gujarati ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${gid}`;
+            // console.log("Hindi is inserted !!!");
+     
+            let s5 =`update language_details  set language_name='gujarati',language_read='${read_gujarati ? 'YES':'NO'}',language_write='${write_gujarati ? 'YES':'NO'}',language_speak='${speak_gujarati ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${gid}`;
             let a5 = await con.query(s5);
-            }
-        if(`${language}` == 'gujarati' && gid == undefined){
-            let s5 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values(${c_id},'${language}','${read_gujarati ? 'YES':'NO'}','${write_gujarati ? 'YES':'NO'}','${speak_gujarati ? 'YES':'NO'}')`;
-            let a5 = await con.query(s5);
-            console.log('Guajrati Inserted!!!');
-           }
         }
 
     else{
-        for(var i=0 ; i < language.length; i++){
-            if(`${language[i]}` == 'hindi' && eid != undefined){
-                let s3 =`update language_details  set language_name='${language[i]}',language_read='${read_hindi ? 'YES':'NO'}',language_write='${write_hindi ? 'YES':'NO'}',language_speak='${speak_hindi ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${hid}`;
+     
+                let s3 =`update language_details  set language_name='hindi',language_read='${read_hindi ? 'YES':'NO'}',language_write='${write_hindi ? 'YES':'NO'}',language_speak='${speak_hindi ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${hid}`;
                 let a3 = await con.query(s3);
-                console.log("Hindi is Updated !!!");
-           }
+                // console.log("Hindi is Updated !!!");
 
-           if(`${language}` == 'hindi' && eid == undefined){
-            let s3 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values(${c_id},'${language[i]}','${read_hindi ? 'YES':'NO'}','${write_hindi ? 'YES':'NO'}','${speak_hindi ? 'YES':'NO'}')`;
-            let a3 = await con.query(s3);
-            console.log("Hindi is inserted !!!");
-           }
-
-            if( `${language[i]}` == 'english' && eid != undefined){
-                let s4 =`update language_details  set language_name='${language[i]}',language_read='${read_english ? 'YES':'NO'}',language_write='${write_english ? 'YES':'NO'}',language_speak='${speak_english ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${eid}`;
+                let s4 =`update language_details  set language_name='english',language_read='${read_english ? 'YES':'NO'}',language_write='${write_english ? 'YES':'NO'}',language_speak='${speak_english ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${eid}`;
                 let a4 =await con.query(s4);
-                console.log("English updated !!!");
-           }
-
-           if( `${language[i]}` == 'english' && eid == undefined){
-            let s4 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values(${c_id},'${language[i]}','${read_english ? 'YES':'NO'}','${write_english ? 'YES':'NO'}','${speak_english ? 'YES':'NO'}')`;
-            let a4 =await con.query(s4);
-            console.log('English inserted !!!');
-           }
-
-           if(`${language[i]}` == 'gujarati' && gid != undefined){
-                let s5 =`update language_details  set language_name='${language[i]}',language_read='${read_gujarati ? 'YES':'NO'}',language_write='${write_gujarati ? 'YES':'NO'}',language_speak='${speak_gujarati ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${gid}`;
+                // console.log("English updated !!!");
+    
+                let s5 =`update language_details  set language_name='gujarati',language_read='${read_gujarati ? 'YES':'NO'}',language_write='${write_gujarati ? 'YES':'NO'}',language_speak='${speak_gujarati ? 'YES':'NO'}' where candidate_id=${c_id} && language_id=${gid}`;
                 let a5 = await con.query(s5);
-                console.log("Gujarati is updated !!!");
-           }
-           if(`${language[i]}` == 'gujarati' && gid == undefined){
-            let s5 = `insert into language_details (candidate_id,language_name,language_read,language_write,language_speak) values(${c_id},'${language[i]}','${read_gujarati ? 'YES':'NO'}','${write_gujarati ? 'YES':'NO'}','${speak_gujarati ? 'YES':'NO'}')`;
-            let a5 =await con.query(s5);
-            console.log('Guajrati Inserted!!!');
-           }
-         }
-    }
+                // console.log("Gujarati is updated !!!");
+     }
 
         // Technology --------------------
 
@@ -720,7 +680,7 @@ const update_api = async (req, res)=>{
                 let s5 = `insert into technology_details (candidate_id,technology_name,technology_level) values (${c_id},'${tech}','${oracle}')`;
                 let a5 = await con.query(s5);
             }
-            console.log('Technology inserted !!!');
+            // console.log('Technology inserted !!!');
          }
          else{
             for(var i=0 ; i<tech.length ; i++){
@@ -764,7 +724,7 @@ const update_api = async (req, res)=>{
                     let s5 = `insert into technology_details (candidate_id,technology_name,technology_level) values (${c_id},'${tech[i]}','${oracle}')`;
                     let a5 = await con.query(s5);
                 }
-            console.log("Technology inserted !!!");
+            // console.log("Technology inserted !!!");
         }
      }
         // Reference Update -------------

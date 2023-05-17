@@ -297,7 +297,7 @@
                         <td>
                             <div class="row">
                                 <% for(var i=0 ; i < lang.length ; i++) { %>
-                                    <input type="checkbox" name="language" value="<%= lang[i].o_value %>"><span>
+                                    <input type="checkbox" name="language" value="<%= lang[i].o_value %>" checked disabled><span>
                                         <%= lang[i].o_value %>
                                     </span>
                                     <input type="checkbox" name="<%= 'read_'+lang[i].o_value %>" value="<%= 'read_'+lang[i].o_value %>" ><span>Read</span>

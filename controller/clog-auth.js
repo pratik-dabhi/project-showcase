@@ -11,7 +11,7 @@ const register_page = (req,res)=>{
 }
 
 const login_page = (req,res)=>{
-    res.render('login',{err_msg:''});
+    res.render('login',{err_msg:'',email:''});
 }
 
 
@@ -34,7 +34,7 @@ const login = async(req,res)=>{
     let pass;
     let q1 = `select * from authentication_table where auth_email='${email}'`;
     let [a1] = await con.query(q1);
-    // console.log(a1);
+    
     if(a1.length > 0){
         db_id = (a1[0]['auth_id']);
         db_name = (a1[0]['auth_name']);
@@ -53,17 +53,17 @@ const login = async(req,res)=>{
             res.redirect('/home');
          }
          else{
-            res.render('login',{err_msg:'Incorrect username or Password!'})        
+            res.render('login',{err_msg:'Incorrect username or Password!',email:email})        
         }
     }
     else{
-        res.render('login',{err_msg:'Incorrect username or Password!'})        
+        res.render('login',{err_msg:'Incorrect username or Password!',email:email})        
     }
 }
 
 const logout = (req,res)=>{
     res.clearCookie("user");
-    res.render('login',{err_msg:''});
+    res.render('login',{err_msg:'',email:''});
 }
 
 const home = (req,res)=>{

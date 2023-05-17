@@ -52,7 +52,18 @@
 
         tr td {
             width: 200px;
+            text-align: center;
         }
+
+        .next-btn{
+          background-color: #2C3333;
+          color: white;
+          padding: 0px 15px;
+          border-radius: 15px;
+          line-height: 35px;
+          margin: 0px 5px;
+        }
+
 
         .pagination a {
             color: black;
@@ -62,11 +73,6 @@
             transition: background-color .3s;
         }
 
-        /* .pagination a.active {
-            background-color: dodgerblue;
-            color: white;
-        } */
-
         .pagination a:hover{
             background-color: #ddd;
         }
@@ -75,6 +81,7 @@
             display: flex;
             justify-content: center;
         }
+
     </style>
 </head>
 
@@ -139,7 +146,7 @@
 
     <div class="pagination" id="p-1">
         <% let count1=Math.ceil(countNum / limit)%>
-
+        
             <% for(var i=1 ; i <=10 ; i++) { %>
                 <% if( i==1){ %>
                     <a onclick="pagAs('<%= i %>')" class="" style="background-color: #2C3333;color: white;">
@@ -151,6 +158,7 @@
                             <%= i %>
                         </a>
                         <%} } %>
+                        
     </div>
     <script>
         async function pagAs(page) {
@@ -172,9 +180,8 @@
                 let s_date = e.create_date;
                 opt += `<tr style="background-color: lightgray;"><td>${s_id}</td><td>${s_fname}</td><td>${s_lname}</td><td>${s_contact}</td><td>${s_email}</td><td>${s_college}</td><td>${s_city}</td></tr>`;
             });
-            // console.log(opt);
             t1.innerHTML = (`${opt}`);
-            setTimeout("document.getElementById('overlay').style.display='none '", 1000);
+            setTimeout("document.getElementById('overlay').style.display='none '", 400);
 
             let par = ``;
             for (var i = 1; i <= 10; i++) {

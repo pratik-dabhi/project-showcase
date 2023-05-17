@@ -139,13 +139,17 @@
         </table><br>
         <div class="flex-just">
           <span onclick="add()" class="save-btn">add </span>
-          <input type="submit" value='SAVE ALL' class="save-btn">
+          <input type="submit" value='SAVE ALL' id="update-data" class="save-btn" disabled>
         </div>
         
       </form>
     </div>
     <script>
+      let updateBtn = document.getElementById('update-data');
+
       function add() {
+        updateBtn.disabled = false;
+
         let opt =
           `<tr style="background-color: #C3ACD0 ; color: #FFF">
             <td>
@@ -175,8 +179,8 @@
       }
 
       async function update(pratik) {
+        updateBtn.disabled = false;
         let id = pratik.getAttribute('id');
-        console.log('Front id' ,id);
         let rowId = pratik.parentNode;
         let row = rowId.parentNode;
         const response =await fetch(`/fetch-data?id=${id}`);
@@ -186,7 +190,6 @@
         row.innerHTML = `
         <td>
               <input type="text" value="${result.a1[0].table_id}" name="candidate_id" id="candidate_id" hidden>
-              ${result.a1[0].table_id}
             </td>
             <td>
               <input type="text" name="firstname" value="${result.a1[0].firstname}"/>
@@ -212,10 +215,12 @@
       }
 
       async function  updateData(pratik){
+        updateBtn.disabled = false;
         let id = pratik.getAttribute('id'); 
         let rowId = pratik.parentNode;
         let row = rowId.parentNode;
         let tds = row.children;
+        
         let arr=[]; 
         for (let x of tds) {
             let y = x.childNodes[1];
@@ -233,7 +238,7 @@
       }
     
     async function deleteData(id){
-
+      updateBtn.disabled = false;
       let deleteData = await fetch(`/delete-greed-api?id=${id}`);
       let result = await deleteData.json();
       location.reload(); 

@@ -47,6 +47,9 @@
     <div>
       <h1 class="align-center">Koo-koo Cube</h1>
     </div>
+    <div>
+      <h2 id="score-box"></h2>
+    </div>
     <div class="align-flex">
       <ul class="flex-row nav">
         <li><a href="/home">Home</a></li>
@@ -54,10 +57,12 @@
         <li><a href="#">
             <%= data.db_name%>
           </a></li>
+          <li><input type="reset" onclick="load()"></li>
       </ul>
     </div>
   </div>
   <h2 id="timer" style="text-align: center; font-size: 25px">Timer :</h2>
+  
   <div class="container">
     <table id="table" border="2px">
       <tr>
@@ -77,7 +82,7 @@
       </tr>
     </table>
   </div>
-  <script>
+    <script>
     let timerFlag = 0;
 
     let pratik_counterFlag = 1;
@@ -94,13 +99,9 @@
     pratik_tds.forEach(e => {
       e.addEventListener('click', () => {
         timerFlag += 1;
-        console.log('clickedd');
         start()
       })
     })
-    // console.log('timer flag: ' + timerFlag);
-
-
     function fun() {
       //--------Design dynamic table that increase on click event--------
 
@@ -142,7 +143,7 @@
           fun();
         });
       }
-
+     
 
       //----------For generate randrom hashcode for add background color----------
       const pratik_arr = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "a", "b", "c", "d", "e", "f",];
@@ -169,11 +170,13 @@
     }
 
     //-----------Counter function that display timer!!!------------
+
     function startCountdown(seconds) {
-      // timerFlag = 1;
+      
       let pratik_tm = document.getElementById("timer");
       let counter = (seconds = 15);
       let random;
+      let score = document.getElementById('score-box');
 
       const interval = setInterval(() => {
         pratik_tm.innerHTML = 'TIME : ' + counter;
@@ -182,10 +185,13 @@
         if (counter < 0) {
           clearInterval(interval);
           pratik_tm.innerHTML = "TimeOut";
-          alert("You have score :" + pratik_counterFlag);
+          score.innerHTML='Score : '+pratik_counterFlag;
           // window.location.reload();
         }
       }, 1000);
+    }
+    function load(){
+      window.location.reload();
     }
   </script>
 </body>

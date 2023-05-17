@@ -40,6 +40,14 @@
             margin: 0px 10px;
             text-decoration: none;
         }
+        .search-btn{
+            color:white;
+            background: #2C3333;
+            padding: 3px 15px;
+            border-radius: 25px;
+            margin: 0px 10px;
+            text-decoration: none;
+        }
 
         .delete-btn{
             color:white;
@@ -75,7 +83,7 @@
     <form action="/candidate-data/" method="get">
     <div>
         <input type="text" name='search' placeholder="search" value="<%= search %>">
-        <input type="submit" name='submit' value="submit" >
+        <input type="submit" name='submit' value="search" class="search-btn" >
         <p id="dem">Firstname(^)  |  Lastname($) || City (~) || Surname (#) ||  Designation (/) </p>
     </div>
     <table border="1px" id="r1">
@@ -173,7 +181,7 @@
     }
 
     async function editFun(candidate){
-        window.confirm("Are you sure to edit this"+candidate);
+        
         const result = await fetch(`/edit-api?c_id=${candidate}`);
     }
 </script>

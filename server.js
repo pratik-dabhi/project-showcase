@@ -11,6 +11,7 @@ require('dotenv').config();
 const app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
+
 app.set("view engine","ejs");
 app.use(express.static((__dirname+ '/public')));
 app.use(cookieParser())
@@ -28,6 +29,6 @@ app.use('/',gTable);
 let pagination = require('./routes/pagination');
 app.use('/',pagination);
 
-app.listen(7878	, function () {
-	console.log ("http://localhost:7878/login-page");
+app.listen(8181	, function () {
+	console.log ("http://localhost:8181/login-page");
 } );

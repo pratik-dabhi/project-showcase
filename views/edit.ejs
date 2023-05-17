@@ -127,7 +127,7 @@
                                 <label class="lbl">State</label>
                                 <select name="state" id="s1" onchange="showCity()">
                                     <% for(var i=0 ; i<state.length ; i++){ %>
-                                        <% if(state[i].state_value==ans[0].candidate_state){ %>
+                                        <% if(state[i].state_value == ans[0].candidate_state){ %>
                                             <option name="<%=state[i].state_value%>" value="<%= state[i].state_value%>" selected="selected"> <%= state[i].state_value %> </option>                                      
                                         <% }else { %>
                                             <option name="<%=state[i].state_value%>" value="<%= state[i].state_value%>"> <%= state[i].state_value %> </option>                                                   
@@ -301,7 +301,7 @@
                                         <% for(var j=0 ; j<a3.length ; j++){ %>
                                         <% if(a3[j].language_name == lang[i].o_value){ %>
                                             <% var flag=1  %>
-                                        <input type="checkbox" name="language" value="<%= lang[i].o_value %>" checked="checked"><span><%= lang[i].o_value %></span>
+                                        <input type="checkbox" name="language" value="<%= lang[i].o_value %>" checked="checked" disabled><span><%= lang[i].o_value %></span>
                                         
                                         
                                         <% if(a3[j].language_name == lang[i].o_value && a3[j].language_read == 'YES'){ %>
@@ -328,7 +328,7 @@
 
 
                                             <%if(flag == 0) { %>
-                                                <input type="checkbox" name="language" value="<%= lang[i].o_value %>"><span>
+                                                <input type="checkbox" name="language" value="<%= lang[i].o_value %>" checked disabled><span>
                                                     <%= lang[i].o_value %>
                                                 </span>
                                                 <input type="checkbox" name="<%= 'read_'+lang[i].o_value %>" value="<%= 'read_'+lang[i].o_value %>" ><span>Read</span>
@@ -514,8 +514,10 @@
             let ans;
             let state = document.getElementById("s1");        
             const result = await fetch(`/city-api?id=${state.value}`);
+
             const city1 = await result.json();
-            console.log('518----',city1);
+            
+            
             let  city_com = document.getElementById('city_com');
             let opt=''; 
             city1.a1.forEach(e => {

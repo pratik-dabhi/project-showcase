@@ -13,7 +13,7 @@ Route.post('/data-api',greed.data_api)
 
 Route.get('/fetch-data',authToken,greed.fetchData);
 
-Route.get('/delete-api',authToken,greed.deleteApi);
+Route.get('/delete-greed-api',authToken,greed.deleteApi);
 
 module.exports = Route;
 
